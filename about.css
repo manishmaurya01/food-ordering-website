@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@1,500&family=Handjet:wght@300&family=Kotta+One&family=Lemon&family=Montserrat:ital,wght@1,300&family=Moul&family=Nosifer&family=Permanent+Marker&family=Questrial&family=Sevillana&family=Spicy+Rice&family=Teko:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@1,500&family=Handjet:wght@300&family=Kotta+One&family=Lemon&family=Montserrat:ital,wght@1,300&family=Moul&family=Nosifer&family=Permanent+Marker&family=Questrial&family=Salsa&family=Sevillana&family=Spicy+Rice&family=Teko:wght@300&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -39,7 +42,7 @@ body{
     font-weight: 550;
     color: black;
 }
-.ultag :first-child a{
+.ultag :nth-child(2) a{
     color: rgb(237, 66, 24);
 }
 
