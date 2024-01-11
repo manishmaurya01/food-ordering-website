@@ -1,0 +1,157 @@
+
+/* Media query for screens smaller than 600px (typical mobile devices) */
+
+@media only screen and (max-width: 600px) {
+    /* Styles for screens smaller than 600px */
+    .card {
+        width: 100%;
+        height: 40%;
+        display: flex;
+    }
+    .card-image{
+        width: 40%;
+        height: 100%;
+    }
+    .card-image img{
+        padding: 10px;
+    }
+    .card-details{
+        width: 60%;
+        height: 100%;
+    }
+    .container{
+        padding-top: 40px;
+    }
+    .search{
+        width: 100%;
+    }
+    .btns{
+        width: 100%;
+        height: 30%;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    .btns button{
+        width: 80%;
+    }
+    .filter-section{
+        font-size: 17px;
+    }
+    .filter-section #category{
+        width: 80%;
+    }
+    .my-card{
+        top: 55%;
+        width: 95%;
+        height: 80%;
+    }
+    .my-card input{
+        width: 95%;  
+    }
+
+    #rating{
+        width: 95%;
+    }
+    .ADD{
+        padding: 15px 60px;
+    }
+    .popup-content {
+        top: 55%;
+        width: 95%;
+        height: 80%;
+    }
+    .buybtn{
+        height: 12%;
+        width: 40%;
+        font-size: 18px;
+    }
+    .popup-img{
+        width: 40%;
+    }
+    .removeBtn{
+        width: 30%;
+    }
+    
+  }
+  
+  /* Media query for screens between 601px and 900px (typical tablets) */
+  
+  @media only screen and (min-width: 601px) and (max-width: 900px) {
+    /* Styles for screens between 601px and 900px */
+    
+
+.card {
+    width: 40%;
+    height: 60%;
+}
+.card-image{
+    width: 100%;
+    height: 40%;
+}
+.card-details{
+    width: 100%;
+    height: 60%;
+}
+
+
+.btns{
+    width: 100%;
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+}
+.btns button{
+    width: 80%;
+}
+.filter-section{
+    font-size: 17px;
+
+}
+.filter-section #category{
+    width: 100%;
+}
+  }
+  
+  /* Media query for screens between 901px and 1200px (typical small laptops) */
+  
+  @media only screen and (min-width: 901px) and (max-width: 1200px) {
+    /* Styles for screens between 901px and 1200px */
+    .card {
+        width: 40%;
+        height: 45%;
+        display: flex;
+    }
+    .card-image{
+        width: 40%;
+        height: 100%;
+    }
+    .card-details{
+        width: 60%;
+        height: 100%;
+    }
+    
+  }
+  
+  /* Media query for screens larger than 1200px (typical desktops) */
+  
+  @media only screen and (min-width: 1201px) {
+    /* Styles for screens larger than 1200px */
+    .card {
+        width: 31%;
+        height: 47%;
+        display: flex;
+    }
+    .card-image{
+        width: 40%;
+        height: 100%;
+    }
+    .card-details{
+        width: 60%;
+        height: 100%;
+    }
+    
+  }

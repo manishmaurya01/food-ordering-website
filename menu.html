@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="menu.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Hotel Menu</title>
+</head>
+
+<body>
+
+    <!-- Navigation Section -->
+    <nav>
+        <div class="nav-container">
+            <h1 class="brand-name">Dh<span>aba Delici</span>as</h1>
+            <div class="search">
+                <input type="text" id="search-inp" placeholder="Search food..." value="">
+            </div>
+            <span class="openside" id="opensidenav">&#9776;</span>
+
+        </div>
+    </nav>
+
+    <!-- Side Navigation Section -->
+    <div class="sidenav">
+        <div class="sidenav-nav">
+            <span class="closeside" id="closesidenav">&times;</span>
+            <div class="side-content">
+                <div class="profile-sec">
+                    <img src="https://media.istockphoto.com/id/1316420668/vector/user-icon-human-person-symbol-social-profile-icon-avatar-login-sign-web-user-symbol.jpg?s=612x612&w=0&k=20&c=AhqW2ssX8EeI2IYFm6-ASQ7rfeBWfrFFV4E87SaFhJE=" alt="profile">
+                    <span id="profilenamesec"><span id="profilename">Please Login</span></span>
+                </div>
+                <div class="btns">
+                    <button id="addCardBtn">Add Food</button>
+                    <button class="orderup" id="cartBtn">carts- <span id="totalItems"> 0</span></button>
+                </div>
+                    <div class="filter-section">
+                        <label for="category">Select Category:</label>
+                        <select id="category">
+                            <option value="all">All</option>
+                            <option value="fastfood">Fast Food</option>
+                            <option value="lunch">Lunch</option>
+                            <option value="dinner">Dinner</option>
+                            <option value="breakfast">Breakfast</option>
+                        </select>
+                    </div>
+                <div class="btn">
+                    <button class="side-loginBtn" id="side-loginBtn">login</button>
+                    <button class="logoutbtn" id="side-logoutBtn">logout</button>
+
+                    <!-- Add this button in your HTML -->
+<!-- <button class="googleSignIn">Sign in with Google</button> -->
+
+                </div>
+
+                <div class="internal-links">
+                    <li><a href="index.html">home</a></li>
+                    <li><a href="about.html">about us</a></li>
+                    <li><a href="menu.html">menu</a></li>
+                    <li><a href="contact">contact us</a></li>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Section -->
+    <div class="container" id="menu">
+        <div class="my-cards" id="myCards"></div>
+    </div>
+
+    <!-- Popups
+    <div id="searchPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('searchPopup')">&times;</span>
+            <div class="popup-upper">
+                <h2 class="popup-title">Search Results</h2>
+            </div>
+            <div class="popup-lower" id="searchItems"></div>
+        </div>
+    </div> -->
+
+    <!-- Cart Popup Content -->
+    <div id="cartPopup" class="popup">
+        <div class="popup-content">
+            <section class="popup-upper">
+                <span class="close" id="close-cart">&times;</span>
+                <h2 class="popup-title">Shopping Cart</h2>
+            </section>
+            <section class="popup-lower">
+                <div id="cartItems"></div>
+            </section>
+            <p class="totalPrice">Total Price: $<span id="totalPrice">0</span></p>
+            <button  id="buy-popup" class="buybtn">Buy Now</button>
+        </div>
+    </div>
+
+    <!-- Buy Card Popup Content -->
+    <div id="buyCardPopup" class="popup">
+        <div class="popup-content">
+            <section class="popup-upper">
+                <span class="close" id="close-buy" >&times;</span>
+                <h2 class="popup-title">Thank You for Buying.</h2>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Add Card Popup Content -->
+    <div class="addcard-popup" id="addcard-popup">
+        <div class="my-card">
+            <span class="close" id="close-addcard">&times;</span>
+            <strong>Add New food</strong>
+            <input type="file" id="imageInput" accept="image/*">
+            <p>OR</p>
+            <input type="url" id="imageUrlInput" placeholder="Enter Image URL">
+            <input type="text" name="name" id="name" placeholder="Enter name of the food">
+            <input type="text" name="description" id="description" placeholder="Enter description of the food">
+            <select name="rating" id="rating">
+                <option value="1">1 &#9733;</option>
+                <option value="2">2 &#9733;&#9733;</option>
+                <option value="3">3 &#9733;&#9733;&#9733;</option>
+                <option value="4">4 &#9733;&#9733;&#9733;&#9733;</option>
+                <option value="5">5 &#9733;&#9733;&#9733;&#9733;&#9733;</option>
+            </select>
+            <input type="number" name="price" id="price" placeholder="Enter price of the food">
+            <button class="ADD" id="add">ADD</button>
+        </div>
+    </div>
+<button class="orders" id="cartBtn">your orders- <span id="totalItem"> 0</span></button>
+    <!-- Fixed white box at the bottom for showing current orders -->
+<div id="orderSummaryBox" class="order-summary-box">
+    <span class="close" id="oclose">&times;</span>
+    <h3>Your Orders</h3>
+    <div class="order-box">
+        <div id="currentOrders"></div>
+        <p>Total Order Price: &#8377;<span id="orderTotal">0.00</span></p>
+    </div>
+</div>
+
+<div class="siguppopupbkg"></div>
+<div class="signup" id="siguppopup">
+    <span class="close" id="singupclose">&times;</span>
+    <span>SIGNUP</span>
+    <div class="signup-container">
+        <div class="inputs">
+            <input type="email" name="email" placeholder="Enter your email" id="signupemail" value="">
+            <input type="password" name="password" placeholder="Enter your password" id="signuppassword" value="">
+        </div>
+        <div class="signup-btns">
+            <button class="login" id="signupBtn">signup</button>
+        </div>
+    </div>
+</div>
+<div class="loginpopupbkg"></div>
+<div class="login" id="loginpopup">
+    <span class="close" id="loginclose">&times;</span>
+    <span>LOGIN</span>
+    <div class="login-container">
+        <div class="inputs">
+            <input type="email" name="email" placeholder="Enter your email" id="loginemail" value="abc">
+            <input type="password" name="password" placeholder="Enter your password" id="loginpassword" value="abc">
+        </div>
+        <div class="login-btns">
+            <button class="login" id="side-signupBtn">singup</button>
+            <button class="login" id="loginBtn">login</button>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Add script tags for Firebase v8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<!-- Your script -->
+</body>
+<script type="module" src="menu.js"></script>
+</html>
