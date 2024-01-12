@@ -24,6 +24,55 @@ let cartItems = [];
 let totalPrice = 0;
 updateCartPopup();
 
+// Initialize cartItems from local storage on page load
+window.addEventListener('load', () => {
+    // Check if there are existing cart items in local storage
+    const storedCartItems = localStorage.getItem('cartItems');
+    
+    // If there are existing items, use them; otherwise, initialize as an empty array
+    cartItems = storedCartItems ? JSON.parse(storedCartItems) : [];
+    document.querySelector('.totalItem').textContent = cartItems.length;
+    // Call the function to update the cart popup with the loaded or empty cartItems
+    updateCartPopup();
+});
+
+
+// Function to update the cart in local storage and display the cart popup
+function updateCartLocalStorage() {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    updateCartPopup();
+    // displayPopup('cartPopup');
+}
+
+// Function to remove item from cart by id and update local storage
+function removeItemAndUpdateLocalStorage(id) {
+    const index = cartItems.findIndex(item => item.id === id);
+    if (index !== -1) {
+        cartItems.splice(index, 1);
+        updateCartLocalStorage();
+    }
+}
+
+function addToCartAndUpdateLocalStorage(foodName, img, price, cardDetails,uniqueId) {
+    const parsedPrice = parseFloat(price);
+
+    if (isNaN(parsedPrice)) {
+        alert("Invalid price. Please provide a valid number.");
+        return;
+    }
+
+    // const uniqueId = `Card-${cartItems.length + 1}-${Date.now()}`;
+    const newItem = { id: uniqueId, foodName, img, price: parsedPrice, cardDetails };
+
+    // Update the cartItems array
+    // cartItems.push(newItem);
+
+    // Save the updated cartItems to local storage
+    updateCartLocalStorage();
+
+    // Optionally, you can display a confirmation or update the UI here
+    console.log("Item added to cart:", newItem);
+}
 
 const signupBtn = document.getElementById('signupBtn');
 const loginBtn = document.getElementById('loginBtn');
@@ -36,6 +85,11 @@ const category = document.getElementById('category');
 
 // DOMContentLoaded Event Listener
 document.addEventListener('DOMContentLoaded', () => {
+    if (cartItems.length < 1) {
+        document.querySelector('.totalItem').style.display = 'none';
+    } else {
+        document.querySelector('.totalItem').style.display = 'block';
+    }
     // Elements
     document.querySelector('.orders').style.display = 'none'
 
@@ -228,7 +282,7 @@ function getCurrentOrders() {
                 mylistsec.innerHTML = '';
                 let totalOrderPrice = 0; // Initialize the total order price
 
-                document.getElementById('totalItem').textContent = orders.length;
+                document.getElementById('totalItems').textContent = orders.length;
 
                 orders.forEach(([orderId, ele]) => {
                     const list = createCardElement('div');
@@ -260,6 +314,8 @@ function getCurrentOrders() {
                 mylistsec.innerHTML = '';
                 document.getElementById('orderTotal').textContent = '0';
                 document.getElementById('orderSummaryBox').style.display = 'none';
+                // document.querySelector('#totalItem').textContent = '0'
+                document.querySelector('.orders').style.display = 'none'
             }
         })
         .catch((error) => {
@@ -277,14 +333,11 @@ function cancelOrder(orderId) {
     // Remove the order from the database
     remove(orderRef)
         .then(() => {
-            // console.log('Order canceled successfully.');
-            // Update the UI or any other necessary actions after canceling an order
+            getCurrentOrders();
         })
         .catch((error) => {
             console.error('Error canceling order:', error.message);
         });
-
-    getCurrentOrders();
 }
 
 
@@ -376,7 +429,7 @@ function createCardElement(data) {
         <div class="card-details">
             <section class="upper-sec">
                 <strong class="food-name">${data.food_name}</strong>
-                <p class="food-description">${data.food_desc}</p>
+              
                 <span class="rating">${star}${data.food_ratings}/5</span>
             </section>
             <section class="lower-sec">
@@ -445,9 +498,20 @@ function buyNow() {
         closePopup('cartPopup');
         totalPrice = 0;
         document.getElementById('totalItems').textContent = cartItems.length;
-        document.getElementById('totalItem').textContent = cartItems.length;
+        // document.getElementById('totalItem').textContent = cartItems.length;
 
-        cartItems.forEach((order) => {
+        // Copy cartItems to a new array to avoid modifying the original array in the loop
+        const orderedItems = [...cartItems];
+
+        // Clear cartItems
+        cartItems = [];
+        document.getElementById('totalItems').textContent = cartItems.length;
+        // document.getElementById('totalItem').textContent = cartItems.length;
+
+        // Update local storage after clearing the cart
+        updateCartLocalStorage();
+
+        orderedItems.forEach((order) => {
             order = {
                 orderimg: order.img,
                 orderName: order.cardDetails,
@@ -458,12 +522,13 @@ function buyNow() {
                 orderStatus: "Pending"
             };
             const orderId = addOrderToFirebase(order);
-        })
-        cartItems = ''
+        });
+        updateCartPopup();
+        // Optionally, you can update the cart popup here
     }
-
-
 }
+
+
 // Function to add a new order to Firebase
 function addOrderToFirebase(order) {
     const database = getDatabase(app);
@@ -492,11 +557,15 @@ function getCurrentTime() {
     const seconds = now.getSeconds().toString().padStart(2, '0');
     return `${hours}:${minutes}:${seconds}`;
 }
-
-// update the card when user add any item using add to cart btn 
+// Function to get the total number of items in localStorage
+function getTotalItemsInLocalStorage() {
+    const storedCartItems = localStorage.getItem('cartItems');
+    return storedCartItems ? JSON.parse(storedCartItems).length : 0;
+}
 function updateCartPopup() {
     const cartItemsDiv = document.getElementById('cartItems');
     const totalPriceSpan = document.getElementById('totalPrice');
+    const totalItemElement = document.querySelector('.totalItem');
 
     // Clear existing content
     cartItemsDiv.innerHTML = '';
@@ -505,45 +574,62 @@ function updateCartPopup() {
     cartItems.forEach((item) => {
         const itemDiv = document.createElement('div');
         itemDiv.innerHTML = `<span> <img src="${item.img}" alt="item" class="popup-img"></span>
-                     <p>${item.foodName} - $${item.price.toFixed(2)} </p>
-                     <button class="removeBtn" data-id="${item.id}">Remove</button>`;
+                            <p>${item.foodName} - $${item.price} </p>
+                            <button class="removeBtn" data-id="${item.id}">Remove</button>`;
 
         // Attach the event listener to the "Remove" button
-
+        const removeBtn = itemDiv.querySelector('.removeBtn');
+        removeBtn.addEventListener('click', () => removeItem(item.id));
 
         cartItemsDiv.appendChild(itemDiv);
     });
 
     // Display total price with two decimal places
-    totalPriceSpan.textContent = `${totalPrice.toFixed(2)}`;
+    totalPriceSpan.textContent = `$${totalPrice.toFixed(2)}`;
+
+    // // Display the cartPopup
+    // const cartPopup = document.getElementById('cartPopup');
+    // cartPopup.style.display = 'block';
+
+    // Update the visibility of total item element based on cartItems length
+    if (cartItems.length > 0) {
+        totalItemElement.style.display = 'block';
+        totalItemElement.textContent = cartItems.length;
+    } else {
+        totalItemElement.style.display = 'none';
+    }
 }
 
-// remove added cart from the cart popup 
+
 function removeItem(id) {
     console.log(`Removing item with ID: ${id}`);
     const index = cartItems.findIndex(item => item.id === id);
     if (index !== -1) {
         totalPrice -= Math.abs(cartItems[index].price); // Subtract the absolute value
         const removedItem = cartItems.splice(index, 1)[0];
-        document.getElementById('totalItems').textContent = cartItems.length;
 
+        // Remove the event listener for the removed item
         const removeBtn = document.querySelector(`.removeBtn[data-id="${removedItem.id}"]`);
         if (removeBtn) {
             removeBtn.removeEventListener('click', () => removeItem(removedItem.id));
         }
 
-        displayCartPopup();
+        document.querySelector('.totalItem').textContent = cartItems.length;
+
+        // Update local storage after removing the item
+        updateCartLocalStorage();
+
+        // Display the updated cart popup
+        updateCartPopup();
     }
     if (cartItems.length < 1) {
-        console.log('delete');
-        document.querySelector('#cartPopup').style.display = 'none'
-
+        document.querySelector('#cartPopup').style.display = 'none';
+        document.querySelector('.totalItem').style.display = 'none';
     }
-
 }
 
 function addToCart(foodName, img, price, cardDetails) {
-    document.querySelector('.orderup').style.display = 'block'
+    // document.querySelector('.orderup').style.display = 'block';
     const parsedPrice = parseFloat(price);
 
     if (isNaN(parsedPrice)) {
@@ -551,16 +637,23 @@ function addToCart(foodName, img, price, cardDetails) {
         return;
     }
 
-
-
     const uniqueId = `Card-${cartItems.length + 1}-${Date.now()}`;
     cartItems.push({ id: uniqueId, foodName, img, price: parsedPrice, cardDetails });
     totalPrice += Math.abs(parsedPrice);
-    document.getElementById('totalItems').textContent = cartItems.length;
-    // document.getElementById('totalItem').textContent = cartItems.length;
-    updateCartPopup();
+
+    // document.getElementById('totalItems').textContent = cartItems.length;
+    updateCartPopup();  // Call the updateCartPopup function here
     console.log(cartItems);
+
+    addToCartAndUpdateLocalStorage(foodName, img, price, cardDetails, uniqueId);
+    if(cartItems != 0){
+        document.querySelector('.totalItem').style.display='block';
+        document.querySelector('.totalItem').textContent = cartItems.length;
+    } else {
+        document.querySelector('.totalItem').style.display='none';
+    }
 }
+
 
 // display all the data which is added by user in add to cart 
 function displayCartPopup() {
@@ -644,3 +737,4 @@ function displaySearchResults(results) {
 
 // Call updateCartPopup when the page loads to initialize the cart
 window.addEventListener('load', updateCartPopup);
+

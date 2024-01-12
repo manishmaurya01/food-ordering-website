@@ -7,10 +7,14 @@
     <link rel="stylesheet" href="menu.css">
     <link rel="stylesheet" href="responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="module" src="menu.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <title>Hotel Menu</title>
 </head>
 
 <body>
+<div class="main-wrapper">
+
 
     <!-- Navigation Section -->
     <nav>
@@ -19,8 +23,11 @@
             <div class="search">
                 <input type="text" id="search-inp" placeholder="Search food..." value="">
             </div>
+            <div class="my-carts" id="cartBtn">
+                <span class="totalItem orderup"></span>
+                <i class="fa fa-shopping-cart" ></i>
+            </div>
             <span class="openside" id="opensidenav">&#9776;</span>
-
         </div>
     </nav>
 
@@ -35,7 +42,7 @@
                 </div>
                 <div class="btns">
                     <button id="addCardBtn">Add Food</button>
-                    <button class="orderup" id="cartBtn">carts- <span id="totalItems"> 0</span></button>
+                    <!-- <button class="orderup" id="cartBtn">carts- <span id="totalItems"> 0</span></button> -->
                 </div>
                     <div class="filter-section">
                         <label for="category">Select Category:</label>
@@ -60,7 +67,7 @@
                     <li><a href="index.html">home</a></li>
                     <li><a href="about.html">about us</a></li>
                     <li><a href="menu.html">menu</a></li>
-                    <li><a href="contact">contact us</a></li>
+                    <li><a href="contact.html">contact us</a></li>
                 </div>
             </div>
         </div>
@@ -129,7 +136,7 @@
             <button class="ADD" id="add">ADD</button>
         </div>
     </div>
-<button class="orders" id="cartBtn">your orders- <span id="totalItem"> 0</span></button>
+    <button class="orders" id="cartBtn">your orders- <span id="totalItems"> 0</span></button>
     <!-- Fixed white box at the bottom for showing current orders -->
 <div id="orderSummaryBox" class="order-summary-box">
     <span class="close" id="oclose">&times;</span>
@@ -171,6 +178,44 @@
 </div>
 
 
+
+<footer>
+    <div class="footer-wrapper">
+        <div class="footer-internal-links footer-innerdiv">
+            <strong>internal links</strong>
+            <ul class="ultag">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About us</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="contact.html">Contact us</a></li>
+            </ul>
+        </div>
+        <div class="footer-social-links footer-innerdiv">
+            <strong>Social links</strong>
+            <ul class="social-links ultag">
+                <li><a href="https://www.facebook.com/profile.php?id=100090478371578" target="_blank"><i
+                            class="fab fa-facebook-f fa-2x"></i></a></li>
+                <li><a href="https://twitter.com/mk_maurya_4343?t=Iyj75KFryvxNUX_OzHaqoQ&s=08"
+                        target="_blank"><i class="fab fa-twitter fa-2x"></i></a></li>
+                <li><a href="https://www.linkedin.com/in/manish-kumarmaurya/" target="_blank"><i
+                            class="fab fa-linkedin-in fa-2x"></i></a></li>
+                <li><a href="https://www.instagram.com/mr_manish_4343/?igshid=YmMyMTA2M2Y%3D"
+                        target="_blank"><i class="fab fa-instagram fa-2x"></i></a></li>
+                <li><a href="https://github.com/ManishCoderlive" target="_blank"><i
+                            class="fab fa-github fa-2x"></i></a></li>
+            </ul>
+        </div>
+        <div class="footer-about footer-innerdiv">
+            <strong>Auther</strong>
+            <h3>ALL RIGHTS RESERVED</h3>
+             <span><i class="fa fa-link portfolio-link"></i><a href="https://manishmaurya.netlify.app/">@MANISH MAURYA</a></span>
+        </div>
+
+    </div>
+</footer>
+
+</div>
+
     <!-- Add script tags for Firebase v8 -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -181,5 +226,4 @@
 
 <!-- Your script -->
 </body>
-<script type="module" src="menu.js"></script>
 </html>

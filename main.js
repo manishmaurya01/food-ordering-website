@@ -96,3 +96,460 @@ function createCardElement(data) {
 
     return itemDiv;
 }
+
+let cartItems = [];
+// let currento = []
+let totalPrice = 0;
+updateCartPopup();
+
+// Initialize cartItems from local storage on page load
+window.addEventListener('load', () => {
+    // Check if there are existing cart items in local storage
+    const storedCartItems = localStorage.getItem('cartItems');
+    
+    // If there are existing items, use them; otherwise, initialize as an empty array
+    cartItems = storedCartItems ? JSON.parse(storedCartItems) : [];
+  
+    if(cartItems != 0){
+        document.querySelector('.totalcarts').style.display='block';
+        document.querySelector('.totalcarts').textContent = cartItems.length;
+    } else {
+        document.querySelector('.totalcarts').style.display='none';
+    }
+    // Call the function to update the cart popup with the loaded or empty cartItems
+    updateCartPopup();
+    
+    
+});
+
+
+// Function to remove item from cart by id and update local storage
+function removeItemAndUpdateLocalStorage(id) {
+    const index = cartItems.findIndex(item => item.id === id);
+    if (index !== -1) {
+        cartItems.splice(index, 1);
+        updateCartLocalStorage();
+    }
+}
+
+function addToCartAndUpdateLocalStorage(foodName, img, price, cardDetails,uniqueId) {
+    const parsedPrice = parseFloat(price);
+
+    if (isNaN(parsedPrice)) {
+        alert("Invalid price. Please provide a valid number.");
+        return;
+    }
+
+    // const uniqueId = `Card-${cartItems.length + 1}-${Date.now()}`;
+    const newItem = { id: uniqueId, foodName, img, price: parsedPrice, cardDetails };
+
+    // Update the cartItems array
+    // cartItems.push(newItem);
+
+    // Save the updated cartItems to local storage
+    updateCartLocalStorage();
+
+    // Optionally, you can display a confirmation or update the UI here
+    console.log("Item added to cart:", newItem);
+}
+
+
+
+// DOMContentLoaded Event Listener
+document.addEventListener('DOMContentLoaded', () => {
+    let cartBtn = document.getElementById('shopingcart');
+
+    // Main Event Listeners
+    cartBtn.addEventListener('click', () => displayPopup('cartPopup'));
+    document.querySelector('#buy-popup').addEventListener('click', () => buyNow());
+    document.querySelector('.orders').addEventListener('click', () => displayPopup('orderSummaryBox'));
+    document.querySelector('#oclose').addEventListener('click', () => closePopup('orderSummaryBox'));
+    document.querySelector('#close-cart').addEventListener('click', () => closePopup('cartPopup'));
+
+    // Call getCurrentOrders after the DOM is fully loaded
+    getCurrentOrders();
+});
+
+
+
+
+// Function to check if a user is logged in and fetch their details
+function checkAuthState() {
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // User is signed in
+            console.log("User is signed in:", user.email);
+            document.querySelector('#profilename').style.display='block'
+            closesignupBtn();
+            document.getElementById('side-loginBtn').style.display = 'none'
+            document.querySelector('#profilename').innerHTML = user.email
+            document.querySelector('.login-loading').style.display='none'
+        } else {
+            // User is signed out
+            console.log("User is signed out");
+            document.querySelector('#profilename').style.display='none'
+            document.getElementById('side-logoutBtn').style.display = 'none'
+            document.getElementById('side-loginBtn').style.display = 'block'
+            document.querySelector('.login-loading').style.display='none'
+        }
+    });
+}
+const signupBtn = document.getElementById('signupBtn');
+const loginBtn = document.getElementById('loginBtn');
+const logoutBtn = document.getElementById('side-logoutBtn');
+
+document.getElementById('side-signupBtn').addEventListener('click', () => sidesignupBtn())
+document.getElementById('side-loginBtn').addEventListener('click', () => sideloginBtn())
+document.getElementById('side-logoutBtn').addEventListener('click', () => logOut())
+
+document.getElementById('singupclose').addEventListener('click', () => closesignupBtn())
+document.getElementById('loginclose').addEventListener('click', () => closesignupBtn())
+
+checkAuthState();
+
+
+function sidesignupBtn() {
+    document.querySelector('#siguppopup').style.display = 'block'
+    document.querySelector('.siguppopupbkg').style.display='block'
+    document.querySelector('#loginpopup').style.display = 'none'
+}
+
+function sideloginBtn() {
+    document.querySelector('#siguppopup').style.display = 'none'
+    document.querySelector('#loginpopup').style.display = 'block'
+    document.querySelector('.siguppopupbkg').style.display='block'
+}
+function closesignupBtn() {
+    document.querySelector('#siguppopup').style.display = 'none'
+    document.querySelector('#loginpopup').style.display = 'none'
+    document.querySelector('.siguppopupbkg').style.display='none'
+}
+
+signupBtn.addEventListener('click', () => {
+    const email = document.querySelector('#signupemail').value;
+    const password = document.querySelector('#signuppassword').value;
+    signUp(email, password)
+        .then(() => {
+            // User signed up successfully
+            console.log('User signed up successfully');
+        })
+        .catch(error => {
+            // Handle signup error
+            console.error('Error during signup:', error.message);
+        });
+});
+
+loginBtn.addEventListener('click', () => {
+    const email = document.querySelector('#loginemail').value;
+    const password = document.querySelector('#loginpassword').value;
+    logIn(email, password)
+        .then(() => {
+            // User logged in successfully
+            console.log('User logged in successfully');
+        })
+        .catch(error => {
+            // Handle login error
+            console.error('Error during login:', error.message);
+        });
+});
+
+logoutBtn.addEventListener('click', () => {
+    logOut()
+        .then(() => {
+            // User logged out successfully
+            console.log('User logged out successfully');
+        })
+        .catch(error => {
+            // Handle logout error
+            console.error('Error during logout:', error.message);
+        });
+});
+
+// Function to perform logout
+function performLogout() {
+    logOut()
+        .then(() => {
+            alert("Now you are logged out");
+            location.reload();
+            // Additional actions after logout (if needed)
+        })
+        .catch(error => {
+            console.error("Error logging out:", error.message);
+            // Handle error during logout (if needed)
+        });
+}
+
+// Function to sign up a user
+function signUp(email, password) {
+    return createUserWithEmailAndPassword(auth, email, password);
+}
+
+// Function to log in a user
+function logIn(email, password) {
+    return signInWithEmailAndPassword(auth, email, password);
+}
+
+// Function to log out the current user
+function logOut() {
+    return signOut(auth);
+}
+
+
+
+
+function displayPopup(popupid) {
+    document.getElementById(popupid).style.display='block'
+}
+
+// Function to get current orders from the database
+function getCurrentOrders() {
+    const database = getDatabase(app);
+    const ordersRef = ref(database, 'orders');
+
+    // Fetch orders data
+    get(ordersRef)
+        .then((snapshot) => {
+            const currentOrdersContainer = document.getElementById('currentOrders');
+            const totalItemElement = document.getElementById('totalItem');
+            const orderTotalElement = document.getElementById('orderTotal');
+
+            if (snapshot.exists()) {
+                const ordersData = snapshot.val();
+                const ordersArray = ordersData ? Object.entries(ordersData) : [];
+
+                console.log('Total Orders:', ordersArray);
+                console.log('Total Orders:', ordersArray.length);
+                document.getElementById('totalItem').textContent = ordersArray.length;
+                // Clear existing content
+                currentOrdersContainer.innerHTML = '';
+
+                let totalOrderPrice = 0;
+
+                ordersArray.forEach(([orderId, order]) => {
+                    const orderItem = document.createElement('div');
+                    orderItem.classList.add('curentorderslist');
+                    orderItem.innerHTML = `
+                        <li>${order.foodName}</li>
+                        <li>${order.orderPrice}</li>
+                        <li>${order.orderDate}</li>
+                        <li>${order.orderTime}</li>
+                        <li>${order.orderStatus}</li>
+                        <button class='cancel-btn' data-order-id='${orderId}'>Cancel</button>
+                    `;
+
+                    // Append order item to the container
+                    currentOrdersContainer.appendChild(orderItem);
+
+                    // Accumulate the order prices
+                    totalOrderPrice += parseFloat(order.orderPrice);
+
+                    const cancelBtn = orderItem.querySelector('.cancel-btn');
+                    cancelBtn.addEventListener('click', () => cancelOrder(orderId));
+                });
+
+                // Display the total order price
+                orderTotalElement.textContent = totalOrderPrice.toFixed(2);
+                totalItemElement.textContent = ordersArray.length;
+
+                // Display the container since there are orders
+                document.querySelector('.orders').style.display = 'block';
+            } else {
+                // No orders available
+                currentOrdersContainer.innerHTML = '';
+                orderTotalElement.textContent = '0';
+                document.getElementById('orderSummaryBox').style.display = 'none';
+
+                // Check if totalItemElement exists before modifying its content
+                if (totalItemElement) {
+                    totalItemElement.textContent = '0';
+                }
+
+                // Hide the orders container
+                document.querySelector('.orders').style.display = 'none';
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching data:', error.message);
+        });
+}
+
+function closePopup(popupId) {
+    document.getElementById(popupId).style.display = 'none';
+
+}
+function buyNow() {
+    console.log('works');
+    if (cartItems.length === 0) {
+        alert("Add something to buy...");
+        closePopup('cartPopup');
+    } else {
+        totalPrice = 0;  // Reset total price before processing orders
+        closePopup('cartPopup');
+        // document.getElementById('totalItems').textContent = cartItems.length;
+        document.getElementById('totalItem').textContent = cartItems.length;
+
+        // Copy cartItems to a new array to avoid modifying the original array in the loop
+        const orderedItems = [...cartItems];
+
+        // Clear cartItems
+        cartItems = [];
+        // document.getElementById('totalItems').textContent = cartItems.length;
+        document.getElementById('totalItem').textContent = cartItems.length;
+
+        // Update local storage after clearing the cart
+        updateCartLocalStorage();
+
+        orderedItems.forEach((order) => {
+            order = {
+                orderimg: order.img,
+                orderName: order.cardDetails,
+                foodName: order.foodName,
+                orderPrice: parseFloat(order.price),  // Convert order price to float
+                orderDate: getCurrentDate(),
+                orderTime: getCurrentTime(),
+                orderStatus: "Pending"
+            };
+            addOrderToFirebase(order);
+        });
+
+        getCurrentOrders();  // Move outside the loop to call it once
+        updateCartPopup();
+        // Optionally, you can update the cart popup here
+    }
+    if(cartItems != 0){
+        document.querySelector('.totalcarts').style.display='block';
+        document.querySelector('.totalcarts').textContent = cartItems.length;
+    } else {
+        document.querySelector('.totalcarts').style.display='none';
+    }
+}
+
+// Function to add a new order to Firebase
+function addOrderToFirebase(order) {
+    const database = getDatabase(app);
+    const ordersRef = ref(database, 'orders');
+
+    const newOrderRef = push(ordersRef);
+
+    // Add the order along with the timestamp
+    set(newOrderRef, { ...order, orderTimestamp: firebase.database.ServerValue.TIMESTAMP });
+    getCurrentOrders();
+    return newOrderRef.key;
+}
+// Function to get the current date in the format YYYY-MM-DD
+function getCurrentDate() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const day = now.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+function getCurrentTime() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+}
+
+
+function addToCart(foodName, img, price, cardDetails) {
+    // document.querySelector('.orderup').style.display = 'block';
+    const parsedPrice = parseFloat(price);
+
+    if (isNaN(parsedPrice)) {
+        alert("Invalid price. Please provide a valid number.");
+        return;
+    }
+
+    const uniqueId = `Card-${cartItems.length + 1}-${Date.now()}`;
+    cartItems.push({ id: uniqueId, foodName, img, price: parsedPrice, cardDetails });
+    totalPrice += Math.abs(parsedPrice);
+
+    // document.getElementById('totalItems').textContent = cartItems.length;
+    updateCartPopup();  // Call the updateCartPopup function here
+    console.log(cartItems);
+
+    addToCartAndUpdateLocalStorage(foodName, img, price, cardDetails, uniqueId);
+    if(cartItems != 0){
+        document.querySelector('.totalcarts').style.display='block';
+        document.querySelector('.totalcarts').textContent = cartItems.length;
+    } else {
+        document.querySelector('.totalcarts').style.display='none';
+    }
+}
+
+
+function updateCartPopup() {
+    const cartItemsDiv = document.getElementById('cartItems');
+    const totalPriceSpan = document.getElementById('totalPrice');
+
+    // Clear existing content
+    cartItemsDiv.innerHTML = '';
+
+    // Iterate through cartItems and display each item
+    cartItems.forEach((item) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.innerHTML = `<span> <img src="${item.img}" alt="item" class="popup-img"></span>
+                            <p>${item.foodName} - $${item.price} </p>
+                            <button class="removeBtn" data-id="${item.id}">Remove</button>`;
+
+        // Attach the event listener to the "Remove" button
+        const removeBtn = itemDiv.querySelector('.removeBtn');
+        removeBtn.addEventListener('click', () => removeItem(item.id));
+
+        cartItemsDiv.appendChild(itemDiv);
+    });
+
+    // Display total price with two decimal places
+    totalPriceSpan.textContent = `$${totalPrice.toFixed(2)}`;
+
+    // Display the cartPopup
+    const cartPopup = document.getElementById('cartPopup');
+    // cartPopup.style.display = 'block';
+}
+
+
+// Function to remove item by id from cartItems and update local storage
+function removeItem(id) {
+    const index = cartItems.findIndex(item => item.id === id);
+    if (index !== -1) {
+        totalPrice -= Math.abs(cartItems[index].price);
+        cartItems.splice(index, 1);
+        updateCartLocalStorage();
+        if(cartItems != 0){
+            document.querySelector('.totalcarts').style.display='block';
+            document.querySelector('.totalcarts').textContent = cartItems.length;
+       
+        } else {
+            document.querySelector('.totalcarts').style.display='none';
+            closePopup('cartPopup');
+        }
+    }
+}
+// cencle order directly in database
+function cancelOrder(orderId) {
+
+    // Assuming you have a reference to the 'orders' node in your Firebase database
+    const orderRef = ref(getDatabase(app), `orders/${orderId}`);
+
+    // Remove the order from the database
+    remove(orderRef)
+        .then(() => {
+            getCurrentOrders();
+        })
+        .catch((error) => {
+            console.error('Error canceling order:', error.message);
+        });
+}
+
+
+// Function to update the cart in local storage and display the cart popup
+function updateCartLocalStorage() {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    updateCartPopup();
+}
+
+
+

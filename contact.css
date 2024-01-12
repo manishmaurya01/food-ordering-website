@@ -1,0 +1,222 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@1,500&family=Handjet:wght@300&family=Kotta+One&family=Lemon&family=Montserrat:ital,wght@1,300&family=Moul&family=Nosifer&family=Permanent+Marker&family=Questrial&family=Sevillana&family=Spicy+Rice&family=Teko:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@1,500&family=Handjet:wght@300&family=Kotta+One&family=Lemon&family=Montserrat:ital,wght@1,300&family=Moul&family=Nosifer&family=Permanent+Marker&family=Questrial&family=Salsa&family=Sevillana&family=Spicy+Rice&family=Teko:wght@300&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color: rgb(248, 247, 246);
+    box-shadow: 600px 0px 250px rgba(169, 17, 136, 0.082) inset;
+}
+.main-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.inner-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.navigation {
+    width: 100%;
+    padding: 15px 0px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.ultag {
+    list-style: none;
+}
+
+.ultag li {
+    display: inline-block;
+    padding: 0px 12px;
+}
+
+.ultag li a {
+    text-decoration: none;
+    transition: 0.3s;
+    font-weight: 550;
+    color: black;
+}
+.ultag :nth-child(4) a{
+    color: rgb(237, 66, 24);
+}
+
+.ultag li a:hover {
+    color: rgb(237, 66, 24);
+}
+
+#shopingcart {
+    font-size: 27px;
+    cursor: pointer;
+}
+
+.cart-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn {
+    padding: 10px 25px;
+    border-radius: 20px;
+    border: 0;
+    color: white;
+    background-color: rgb(255, 68, 0);
+    margin: 0px 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background-color: rgb(209, 78, 30);
+    color: beige;
+}
+
+
+
+.navigation h1 {
+    color: rgb(99, 66, 6);
+    font-family: 'Lemon', serif;
+    cursor: pointer;
+}
+
+.navigation h1 span {
+    color: brown;
+}
+
+
+.contactme{
+    text-align: center;
+}
+.contact-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.contact-form {
+    width: 40%;
+    margin: 20px auto;
+    text-align: center;
+
+}
+
+h2 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+
+input,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    padding: 20px 5px;
+    font-size: 17px;
+    offset: 0;
+    border: 0;
+    box-shadow: 10px 10px 90px rgba(143, 137, 155, 0.214);
+    border: 1px solid deepskyblue;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.button:hover {
+    background-color: brown;
+}
+
+.button {
+    padding: 15px 30px;
+    cursor: pointer;
+    border-radius: 20px;
+    border: 0;
+    background-color: orangered;
+    color: white;
+
+}
+
+.contact-img {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contact-img img {
+    width: 70%;
+    height: 70%;
+}
+
+
+
+footer{
+    width: 100%;
+    height: 40vh;
+    background-color: rgb(38, 107, 130);
+}
+.footer-wrapper{
+    width: 100%;
+    height: 100%;
+   display: flex;
+   justify-content: space-around;
+   flex-wrap: wrap;
+}
+.footer-innerdiv{
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+}
+.footer-innerdiv strong{
+    position: relative;
+    bottom: 20%;
+    font-size: 25px;
+    text-decoration: underline;
+}
+.social-links li a i{
+    color: black;  
+    transition: 0.3s;
+}
+.social-links li a i:hover{
+    color: rgb(237, 66, 24);
+}
+.footer-about img{
+    width: 30%;
+    height: auto;
+    border-radius: 10%;
+}
+.portfolio-link{
+    font-size: 20px;
+    padding: 5px 0px;
+    cursor: pointer;
+    color: rgb(49, 49, 118);
+}
+.footer-about span a{
+    color: rgb(48, 39, 74);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 700;
+}
