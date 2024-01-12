@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateOrderSummaryBox();
     });
     // Initial Data Fetch
-    fetchDataFromAPI(category.value);
+    fetchDataFromAPI(localStorage.getItem('selectedFilter'));
     getCurrentOrders();
 });
 
@@ -433,7 +433,7 @@ function createCardElement(data) {
                 <span class="rating">${star}${data.food_ratings}/5</span>
             </section>
             <section class="lower-sec">
-                <strong class="food-prize">&#8377;${data.food_price}</strong>
+                <strong class="food-prize">	&#8377;${data.food_price}</strong>
                 <button class="addToCartBtn">Add to Cart</button>
             </section>
         </div>
@@ -574,7 +574,7 @@ function updateCartPopup() {
     cartItems.forEach((item) => {
         const itemDiv = document.createElement('div');
         itemDiv.innerHTML = `<span> <img src="${item.img}" alt="item" class="popup-img"></span>
-                            <p>${item.foodName} - $${item.price} </p>
+                            <p>${item.foodName} - 	&#8377;${item.price} </p>
                             <button class="removeBtn" data-id="${item.id}">Remove</button>`;
 
         // Attach the event listener to the "Remove" button
@@ -667,7 +667,7 @@ function displayCartPopup() {
     cartItems.forEach((item, index) => {
         const itemDiv = document.createElement('div');
         itemDiv.innerHTML = `<span> <img src="${item.img}" alt="item" class="popup-img"></span>
-                             <p>${item.foodName} - $${item.price} </p>
+                             <p>${item.foodName} - 	&#8377;${item.price} </p>
                              <button class="removeBtn">Remove</button>`;
 
         // Attach the event listener to the "Remove" button
@@ -678,7 +678,7 @@ function displayCartPopup() {
     });
 
     // Display total price with two decimal places
-    totalPriceSpan.textContent = `$${totalPrice.toFixed(2)}`;
+    totalPriceSpan.textContent = `	₹${totalPrice.toFixed(2)}`;
 
     // Display the cartPopup
     cartPopup.style.display = 'block';

@@ -56,6 +56,24 @@ function fetchDataFromFirebaseAndLog() {
         })
 }
 fetchDataFromFirebaseAndLog();
+function addlenght() {
+    const database = getDatabase(app);
+    const dataRef = ref(database);
+
+    get(dataRef)
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                data = snapshot.val();
+                document.querySelector('.alli').textContent = data['all'].length +'items'
+                document.querySelector('.fasti').textContent = data['fastfood'].length +'items'
+                document.querySelector('.lunchi').textContent = data['lunch'].length +'items'
+                document.querySelector('.deeneri').textContent = data['deener'].length +'items'
+                console.log(data)
+                
+                }
+            });
+}
+addlenght();
 
 // create cards of all data
 function createCardElement(data) {
@@ -552,4 +570,23 @@ function updateCartLocalStorage() {
 }
 
 
+
+// Add event listeners to each filter link
+var filterLinks = document.querySelectorAll('.alllink');
+
+filterLinks.forEach(function(link) {
+    link.addEventListener('click', function(event) {
+        // Prevent the default behavior of the link
+        event.preventDefault();
+
+        // Get the filter attribute from the data-cat attribute
+        var filterAttribute = link.getAttribute('data-cat');
+
+        // Store the filter attribute in local storage
+        localStorage.setItem('selectedFilter', filterAttribute);
+
+        // Redirect to the menu page
+        window.location.href = link.href;
+    });
+});
 
