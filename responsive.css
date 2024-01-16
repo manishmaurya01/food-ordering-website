@@ -165,7 +165,9 @@
      height: 70%;
  }
  
-
+ .brand-name{
+    font-size: 20px;
+}
   }
   
   /* Media query for screens between 601px and 900px (typical tablets) */
@@ -282,7 +284,9 @@
     width: 50%;
     height: 70%;
 }
-
+.brand-name{
+    font-size: 23px;
+}
 
   }
   

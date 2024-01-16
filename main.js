@@ -471,7 +471,7 @@ function buyNow() {
                 foodName: order.foodName,
                 orderPrice: parseFloat(order.price),  // Convert order price to float
                 orderDate: getCurrentDate(),
-                orderTime: getCurrentTime(),
+                orderTime: getCurrentTime12Hour(),
                 orderStatus: "Pending"
             };
         
@@ -513,12 +513,18 @@ function getCurrentDate() {
     return `${year}-${month}-${day}`;
 }
 
-function getCurrentTime() {
+
+function getCurrentTime12Hour() {
     const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
+    let hours = now.getHours();
     const minutes = now.getMinutes().toString().padStart(2, '0');
     const seconds = now.getSeconds().toString().padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
+    const meridiem = hours >= 12 ? 'PM' : 'AM';
+
+    // Convert hours to 12-hour format
+    hours = hours % 12 || 12;
+
+    return `${hours}:${minutes}:${seconds} ${meridiem}`;
 }
 
 
@@ -571,7 +577,7 @@ function updateCartPopup() {
     cartItems.forEach((item) => {
         const itemDiv = document.createElement('div');
         itemDiv.innerHTML = `<span> <img src="${item.img}" alt="item" class="popup-img"></span>
-                            <p>${item.foodName} - $${item.price} </p>
+                            <p>${item.foodName} - ₹${item.price} </p>
                             <button class="removeBtn" data-id="${item.id}">Remove</button>`;
 
         // Attach the event listener to the "Remove" button
@@ -582,7 +588,7 @@ function updateCartPopup() {
     });
 
     // Display total price with two decimal places
-    totalPriceSpan.textContent = `$${totalPrice.toFixed(2)}`;
+    totalPriceSpan.textContent = `₹${totalPrice.toFixed(2)}`;
 
     // Display the cartPopup
     const cartPopup = document.getElementById('cartPopup');

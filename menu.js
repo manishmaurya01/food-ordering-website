@@ -553,7 +553,7 @@ function buyNow() {
                 foodName: order.foodName,
                 orderPrice: parseFloat(order.price),  // Convert order price to float
                 orderDate: getCurrentDate(),
-                orderTime: getCurrentTime(),
+                orderTime: getCurrentTime12Hour(),
                 orderStatus: "Pending"
             };
         
@@ -586,13 +586,18 @@ function getCurrentDate() {
     return `${year}-${month}-${day}`;
 }
 
-function getCurrentTime() {
+function getCurrentTime12Hour() {
     const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
+    let hours = now.getHours();
     const minutes = now.getMinutes().toString().padStart(2, '0');
     const seconds = now.getSeconds().toString().padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
+    const meridiem = hours >= 12 ? 'PM' : 'AM';
+
+    hours = hours % 12 || 12;
+
+    return `${hours}:${minutes}:${seconds} ${meridiem}`;
 }
+
 // Function to get the total number of items in localStorage
 function getTotalItemsInLocalStorage() {
     const storedCartItems = localStorage.getItem('cartItems');
