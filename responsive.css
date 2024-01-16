@@ -73,7 +73,53 @@
     .removeBtn{
         width: 30%;
     }
+    .openside{
+        display: block;
+    }
+    .topnavlink{
+        display: none;
+    }
+    .navigation h1{
+        font-size: 22px;
+    }
     
+.home-display{
+    flex-direction: column-reverse;
+}
+.left-display{
+    width: 100%;
+    height: 50%;
+}
+.right-display{
+    width: 100%;
+    height: 50%;
+    
+}
+.atractive-lines {
+    font-size: 30px;
+    text-align: center;
+    padding: 10px 0px;
+}
+.left-display img{
+    width: 50%;
+    height: 100%;
+}
+.my-display-btns{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px;
+}
+.topnavlink{
+    display: none;
+}
+.display-btn{
+    padding: 10px 15px;
+}
+#profilename{
+    display: none;
+}
   }
   
   /* Media query for screens between 601px and 900px (typical tablets) */
@@ -81,7 +127,9 @@
   @media only screen and (min-width: 601px) and (max-width: 900px) {
     /* Styles for screens between 601px and 900px */
     
-
+    .openside{
+        display: block;
+    }
 .card {
     width: 40%;
     height: 60%;
@@ -114,6 +162,41 @@
 .filter-section #category{
     width: 100%;
 }
+.home-display{
+    flex-direction: column-reverse;
+}
+.left-display{
+    width: 100%;
+    height: 50%;
+}
+.right-display{
+    width: 100%;
+    height: 50%;
+    
+}
+.atractive-lines {
+    font-size: 43px;
+    text-align: center;
+    padding: 15px 0px;
+}
+.left-display img{
+    width: 40%;
+    height: 100%;
+}
+.my-display-btns{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px;
+}
+.topnavlink{
+    display: none;
+}
+#profilename{
+    display: none;
+}
+
   }
   
   /* Media query for screens between 901px and 1200px (typical small laptops) */
@@ -133,6 +216,7 @@
         width: 60%;
         height: 100%;
     }
+  
     
   }
   

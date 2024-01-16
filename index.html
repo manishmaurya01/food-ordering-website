@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dhaba Delicias</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
 
@@ -14,7 +15,7 @@
     <div class="inner-wrapper">
         <div class="navigation">
             <h1>Dh<span>aba Delici</span>as</h1>
-            <ul class="ultag">
+            <ul class="ultag topnavlink">
                 <li class="links"><a href="index.html">Home</a></li>
                 <li class="links"><a href="about.html">About</a></li>
                 <li class="links"><a href="menu.html">Menu</a></li>
@@ -25,11 +26,32 @@
                     <span class="totalcarts">1</span>
                     <i class="fa fa-shopping-cart" id="shopingcart"></i>
                 </div>
-                <span id="profilename"></span>
+                 <span id="profilename"></span>
                 <button class="btn" id="side-loginBtn">login</button>
                 <button class="logoutbtn" id="side-logoutBtn">logout</button>
+                <span class="openside" id="opensidenav">&#9776;</span>
             </div>
         </div>
+
+    <!-- Side Navigation Section -->
+    <div class="sidenav">
+        <div class="sidenav-nav">
+            <span class="closeside" id="closesidenav">&times;</span>
+            <div class="side-content">
+                <div class="profile-sec">
+                    <img src="https://media.istockphoto.com/id/1316420668/vector/user-icon-human-person-symbol-social-profile-icon-avatar-login-sign-web-user-symbol.jpg?s=612x612&w=0&k=20&c=AhqW2ssX8EeI2IYFm6-ASQ7rfeBWfrFFV4E87SaFhJE=" alt="profile">
+                    <span id="profilenamesec"><span id="profilenamee">Please Login</span></span>
+                </div>
+
+                <div class="internal-links">
+                    <li><a href="index.html">home</a></li>
+                    <li><a href="about.html">about us</a></li>
+                    <li><a href="menu.html">menu</a></li>
+                    <li><a href="contact.html">contact us</a></li>
+                </div>
+            </div>
+        </div>
+    </div>
 
         <div class="homepage-wrapper" id="home">
             <div class="home-display">

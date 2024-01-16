@@ -129,22 +129,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     // Initial Data Fetch
     fetchDataFromAPI(localStorage.getItem('selectedFilter'));
-    getCurrentOrders();
 });
 
 
 // Function to check if a user is logged in and fetch their details
 function checkAuthState() {
     onAuthStateChanged(auth, (user) => {
+    getCurrentOrders();
+
         if (user) {
             // User is signed in
             console.log("User is signed in:", user.email);
+            document.querySelector('#profilename').style.display='block'
             closesignupBtn();
+            document.getElementById('side-loginBtn').style.display = 'none'
             document.querySelector('#profilename').innerHTML = user.email
+            document.getElementById('side-logoutBtn').style.display='block'
+            // document.querySelector('.login-loading').style.display='none'
         } else {
             // User is signed out
             console.log("User is signed out");
-            document.querySelector('#profilename').innerHTML = 'please Loging'
+            document.querySelector('#profilename').style.display='none'
+            document.getElementById('side-logoutBtn').style.display = 'none'
+            document.getElementById('side-loginBtn').style.display = 'block'
+            // document.querySelector('.login-loading').style.display='none'
         }
     });
 }
@@ -265,7 +273,12 @@ function orders() {
 
 // get current orders from database
 function getCurrentOrders() {
+    const user = getAuth().currentUser;
 
+    if (user) {
+
+    console.log(user.email);
+const userEmail = user.email
     const database = getDatabase(app);
     const dataRef = ref(database, 'orders');
 
@@ -277,50 +290,62 @@ function getCurrentOrders() {
                 const orders = data ? Object.entries(data) : [];
 
                 console.log('Total Orders:', orders.length);
+  // Filter orders based on user's email
+  const userOrders = orders.filter(([orderId, ele]) => ele.userEmail === userEmail);
 
-                let mylistsec = document.getElementById('currentOrders');
-                mylistsec.innerHTML = '';
-                let totalOrderPrice = 0; // Initialize the total order price
+  if (userOrders.length > 0) {
+      document.querySelector('.orders').style.display = 'block';
+      console.log('Total Orders:', userOrders.length);
 
-                document.getElementById('totalItems').textContent = orders.length;
+      let mylistsec = document.getElementById('currentOrders');
+      mylistsec.innerHTML = '';
+      let totalOrderPrice = 0; // Initialize the total order price
 
-                orders.forEach(([orderId, ele]) => {
-                    const list = createCardElement('div');
-                    list.classList.remove('card');
-                    list.classList.add('curentorderslist');
-                    list.innerHTML = `
-                    <li>${ele.foodName}</li>
-                    <li>${ele.orderPrice}</li>
-                    <li>${ele.orderDate}</li>
-                    <li>${ele.orderTime}</li>
-                    <li>${ele.orderStatus}</li>
-                    <button class='cancel-btn' data-order-id='${orderId}'>Cancel</button>
-                `;
+      document.getElementById('totalItems').textContent = userOrders.length;
 
-                    mylistsec.appendChild(list);
+      userOrders.forEach(([orderId, ele]) => {
+          const list = createCardElement('div');
+          list.classList.remove('card');
+          list.classList.add('curentorderslist');
+          list.innerHTML = `
+          <li>${ele.foodName}</li>
+          <li>${ele.orderPrice}</li>
+          <li>${ele.orderDate}</li>
+          <li>${ele.orderTime}</li>
+          <li>${ele.orderStatus}</li>
+          <button class='cancel-btn' data-order-id='${orderId}'>Cancel</button>
+      `;
 
-                    const cancelBtn = list.querySelector('.cancel-btn');
-                    cancelBtn.addEventListener('click', () => cancelOrder(orderId));
+          mylistsec.appendChild(list);
 
-                    // Accumulate the order prices
-                    totalOrderPrice += parseFloat(ele.orderPrice);
+          const cancelBtn = list.querySelector('.cancel-btn');
+          cancelBtn.addEventListener('click', () => cancelOrder(orderId));
 
-                });
+          // Accumulate the order prices
+          totalOrderPrice += parseFloat(ele.orderPrice);
+      });
 
-                // Display the total order price
-                document.getElementById('orderTotal').textContent = `${totalOrderPrice.toFixed(2)}`;
-            } else {
-                let mylistsec = document.getElementById('currentOrders');
-                mylistsec.innerHTML = '';
-                document.getElementById('orderTotal').textContent = '0';
-                document.getElementById('orderSummaryBox').style.display = 'none';
-                // document.querySelector('#totalItem').textContent = '0'
-                document.querySelector('.orders').style.display = 'none'
-            }
-        })
-        .catch((error) => {
-            console.error('Error fetching data:', error.message);
-        });
+      // Display the total order price
+      document.getElementById('orderTotal').textContent = `${totalOrderPrice.toFixed(2)}`;
+  } else {
+      let mylistsec = document.getElementById('currentOrders');
+      mylistsec.innerHTML = '';
+      document.getElementById('orderTotal').textContent = '0';
+      document.getElementById('orderSummaryBox').style.display = 'none';
+      document.querySelector('.orders').style.display = 'none';
+  }
+} else {
+  let mylistsec = document.getElementById('currentOrders');
+  mylistsec.innerHTML = '';
+  document.getElementById('orderTotal').textContent = '0';
+  document.getElementById('orderSummaryBox').style.display = 'none';
+  document.querySelector('.orders').style.display = 'none';
+}
+})
+.catch((error) => {
+console.error('Error fetching data:', error.message);
+});
+}
 
 }
 
@@ -512,16 +537,27 @@ function buyNow() {
         updateCartLocalStorage();
 
         orderedItems.forEach((order) => {
+            const user = getAuth().currentUser;
+        
+            if (!user) {
+                alert("Please log in to place an order.");
+                return; // Stop processing further orders if the user is not logged in
+            }
+        
+            const userEmail = user.email;
+        
             order = {
+                userEmail: userEmail,
                 orderimg: order.img,
                 orderName: order.cardDetails,
                 foodName: order.foodName,
-                orderPrice: order.price,
+                orderPrice: parseFloat(order.price),  // Convert order price to float
                 orderDate: getCurrentDate(),
                 orderTime: getCurrentTime(),
                 orderStatus: "Pending"
             };
-            const orderId = addOrderToFirebase(order);
+        
+            addOrderToFirebase(order);
         });
         updateCartPopup();
         // Optionally, you can update the cart popup here
@@ -628,8 +664,19 @@ function removeItem(id) {
     }
 }
 
+// Function to check if the user is logged in
+function isUserLoggedIn() {
+    const user = getAuth().currentUser;
+    return !!user;
+}
+
+// Updated addToCart function
 function addToCart(foodName, img, price, cardDetails) {
-    // document.querySelector('.orderup').style.display = 'block';
+    if (!isUserLoggedIn()) {
+        alert("Please log in to add items to the cart.");   
+        return;
+    }
+
     const parsedPrice = parseFloat(price);
 
     if (isNaN(parsedPrice)) {
@@ -638,22 +685,21 @@ function addToCart(foodName, img, price, cardDetails) {
     }
 
     const uniqueId = `Card-${cartItems.length + 1}-${Date.now()}`;
-    cartItems.push({ id: uniqueId, foodName, img, price: parsedPrice, cardDetails });
+    const user = getAuth().currentUser;
+    const userEmail = user ? user.email : "Guest";
+    cartItems.push({ id: uniqueId, foodName, img, price: parsedPrice, cardDetails, userEmail });
     totalPrice += Math.abs(parsedPrice);
 
-    // document.getElementById('totalItems').textContent = cartItems.length;
-    updateCartPopup();  // Call the updateCartPopup function here
-    console.log(cartItems);
-
+    updateCartPopup();
     addToCartAndUpdateLocalStorage(foodName, img, price, cardDetails, uniqueId);
-    if(cartItems != 0){
-        document.querySelector('.totalItem').style.display='block';
+    
+    if (cartItems.length !== 0) {
+        document.querySelector('.totalItem').style.display = 'block';
         document.querySelector('.totalItem').textContent = cartItems.length;
     } else {
-        document.querySelector('.totalItem').style.display='none';
+        document.querySelector('.totalItem').style.display = 'none';
     }
 }
-
 
 // display all the data which is added by user in add to cart 
 function displayCartPopup() {

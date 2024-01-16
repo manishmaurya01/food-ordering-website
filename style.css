@@ -14,6 +14,91 @@
 body{
     background-color: rgb(248, 247, 246);
 }
+.openside{
+    display: none;
+    color: black;
+}
+.sidenav{
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #0d0d11da;
+    z-index: 1000;
+
+
+}
+.my-profile-name{
+    display: block;
+}
+.sidenav-nav{
+    float: right;
+    width: 0vw;
+    height: 100%;
+    background-color: #e0e0e0;
+    transition: all ease 0.6s;
+    overflow: auto;
+ 
+}
+.side-content{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.btnn{
+    width: 100%;
+    height: 33%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.openside{
+    color: rgb(17, 17, 32);
+    font-size: 30px;
+    padding: 0px 10px;
+    cursor: pointer;
+  }
+.closeside{
+    color: black;
+    font-size: 35px;
+    font-weight: 700;
+    font-family: cursive;
+    padding: 0px 10px;
+    cursor: pointer;
+   float: left;
+}
+.internal-links{
+    height: 33%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.profile-sec{
+    height: 33%;
+}
+.internal-links li{
+    list-style: none;
+    padding: 10px 20px;
+    display: inline-block;
+    margin: 20px 5px;
+}
+.internal-links li a{
+    color: rgb(136, 70, 8);
+    text-align: center;
+    text-decoration: none;
+}
+.internal-links li a:hover{
+    text-decoration: underline;
+    color: white;
+}
+
+
 .main-wrapper {
     width: 100%;
     height: 100%;
@@ -28,9 +113,9 @@ body{
 
 .navigation {
     width: 100%;
-    padding: 15px 0px;
+    padding: 15px 5px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -116,7 +201,7 @@ body{
     width: 60%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center;    
     flex-direction: column;
     padding: 0px 40px;
   
@@ -342,7 +427,7 @@ swiper-slide:nth-child(10n) {
     box-shadow: 20px 20px 60px black;
 }
 .addToCartBtn,
-#addCardBtn,.orderup,.cancel-btn,#side-signupBtn,#side-logoutBtn,.internal-links li {
+#addCardBtn,.cancel-btn,#side-signupBtn,,.internal-links li {
   padding: 1.5vh 1vw;
   border-radius: 10px;
   border: 1px solid;
@@ -354,35 +439,73 @@ swiper-slide:nth-child(10n) {
   text-wrap: nowrap;
 }
 
-#cartBtn:hover,
+
 .addToCartBtn:hover,
-#addCardBtn:hover,.cancel-btn:hover,#side-signupBtn:hover,#side-logoutBtn:hover,.internal-links li:hover {
-    background-color: rgb(123, 47, 20);
-    color: white;
+#addCardBtn:hover,.cancel-btn:hover,#side-signupBtn:hover,.internal-links li:hover {
+  background-color: var(--button-hover-background);
+  color: white;
+}
+
+.btn{
+    height: 10%;
+}
+.profile-sec{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.profile-sec img{
+    width: auto;
+    height: 100%;
+    border-radius: 50%;
+    border: 1px solid;
+
+}
+.profile-sec #profilenamesec{
+    padding: 10px 0px;
+}
+
+#profilenamesec span{
+    text-decoration: underline;
+}
+
+.container{
+    width: 100%;
+    height: 100%;
+    padding-top: 30px;
+}
+.my-cards {
+    width: 100%;
+    height: 100%; 
+    padding: 30px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+
 }
 
 .card {
+    width: 500px;
+    height: 75%;
     margin: 5px;
     border-radius: 20px;
-    background-color: rgb(255, 255, 255);
-    box-shadow: 20px 20px 60px rgba(185, 161, 194, 0.04), -20px -20px 60px rgba(0, 0, 0, 0.316) inset;
-    box-sizing: border-box; 
-    width: 40%;
-    height: 35vh;
-    display: flex;
+    background-color: rgb(243, 242, 239);
+    box-shadow: 20px 20px 60px rgba(255, 255, 255, 0.336), -20px -20px 60px rgba(0, 0, 0, 0.226) inset;
+    box-sizing: border-box; /* Include padding in the total height */
 }
-
-
 
 .card-image{
     width: 40%;
     height: 100%;
 
 }
-
 .card-image img{
     width: 100%;
-    height: 100%;
+    height: 150px;
     object-fit: cover;
     border-radius: 20px;
     padding: 10px;
@@ -393,14 +516,14 @@ swiper-slide:nth-child(10n) {
     transform: scale(1.04);
 }
 .card-details{
-    width: 100%;
-    height: 60%;
-    text-align: center;
+       text-align: center;
+       width: 60%;
+       height: 100%;
     
 }
 
 .food-name{
-    font-size: 22px;
+    font-size: 21px;
     font-weight: 900;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     text-decoration: underline;
@@ -408,7 +531,7 @@ swiper-slide:nth-child(10n) {
 }
 .upper-sec{
     width: 100%;
-    height: 75%;
+    height: 105px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -416,7 +539,7 @@ swiper-slide:nth-child(10n) {
 }
 .lower-sec{
     width: 100%;
-    height: 25%;
+    height: 50px;
     background-color: rgba(255, 255, 255, 0.257);
     display: flex;
     justify-content: space-between;
@@ -430,6 +553,7 @@ swiper-slide:nth-child(10n) {
 }
 
 .rating{
+    /* padding: 10px 0px; */
     font-weight: 600;
 }
 .checked {
@@ -440,13 +564,6 @@ swiper-slide:nth-child(10n) {
 }
 
 
-.card-image img{
-    padding: 10px;
-}
-.card-details{
-    width: 60%;
-    height: 100%;
-}
 
 .populer-heading{
     font-size: 35px;
@@ -459,24 +576,24 @@ swiper-slide:nth-child(10n) {
 
 .filters-box {
     width: 100%;
-    height: 120px; 
+    height: auto; 
     display: flex;
     justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
-    padding: 12px 0px;
+    padding: 5px 0px;
     border-radius: 10px;
-
 }
 
 .fillter {
-    width: 20%;
-    height: 100%;
+    width: 300px;
+    height: auto;
     background-color: rgb(239, 234, 234);
     border-radius: 10px;
-    padding: 10px;
+    padding: 6px;
     display: flex;
     align-items: center;
+    justify-content: center;
     border: 1px solid;
     cursor: pointer;
     transition: 0.3s;
@@ -487,7 +604,7 @@ swiper-slide:nth-child(10n) {
     background-color: rgb(249, 150, 1);
 }
 .fillter-icon {
-    width: 80px; 
+    width: 30%; 
     height: auto;
     margin-right: 10px; 
     border: 1px solid;
@@ -514,7 +631,7 @@ swiper-slide:nth-child(10n) {
 
 footer{
     width: 100%;
-    height: 40vh;
+    height: 100%;
     background-color: rgb(38, 107, 130);
 }
 .footer-wrapper{
@@ -525,7 +642,8 @@ footer{
    flex-wrap: wrap;
 }
 .footer-innerdiv{
-    width: 30%;
+    padding: 20px 0px;
+    width: 350px;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -937,3 +1055,22 @@ align-items: center;
 .alllink{
     color: black;
 }
+
+
+
+.btn,.logoutbtn {
+    padding: 10px 25px;
+    border-radius: 20px;
+    border: 0;
+    color: white;
+    background-color: rgb(255, 68, 0);
+    margin: 0px 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover,.logoutbtn:hover {
+    background-color: rgb(209, 78, 30);
+    color: beige;
+}
+
