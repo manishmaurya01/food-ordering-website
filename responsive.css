@@ -120,6 +120,34 @@
 #profilename{
     display: none;
 }
+.about-display{
+    flex-direction: column;
+}
+.about-img{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.about-img img{
+    width: 90%;
+    height: 100%;
+    border-radius: 10px;
+}
+.about-details{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.content strong{
+    font-size: 19px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+   }
+
+
   }
   
   /* Media query for screens between 601px and 900px (typical tablets) */
@@ -196,6 +224,29 @@
 #profilename{
     display: none;
 }
+.about-display{
+    flex-direction: column;
+}
+.about-img{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* padding: 50px; */
+}
+.about-img img{
+    width: 50%;
+    height: 100%;
+    border-radius: 20px;
+}
+.about-details{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
   }
   
@@ -215,6 +266,29 @@
     .card-details{
         width: 60%;
         height: 100%;
+    }
+    .about-display{
+        flex-direction: column;
+    }
+    .about-img{
+        width: 100%;
+        height: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* padding: 50px; */
+    }
+    .about-img img{
+        width: 50%;
+        height: 100%;
+        border-radius: 20px;
+    }
+    .about-details{
+        width: 100%;
+        height: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
   
     

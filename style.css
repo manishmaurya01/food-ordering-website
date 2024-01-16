@@ -427,7 +427,7 @@ swiper-slide:nth-child(10n) {
     box-shadow: 20px 20px 60px black;
 }
 .addToCartBtn,
-#addCardBtn,.cancel-btn,#side-signupBtn,,.internal-links li {
+#addCardBtn,.cancel-btn,#side-signupBtn,.internal-links li {
   padding: 1.5vh 1vw;
   border-radius: 10px;
   border: 1px solid;
