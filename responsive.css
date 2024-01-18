@@ -57,22 +57,13 @@
     .ADD{
         padding: 15px 60px;
     }
-    .popup-content {
-        top: 55%;
-        width: 95%;
-        height: 80%;
-    }
+  
     .buybtn{
         height: 12%;
         width: 40%;
         font-size: 18px;
     }
-    .popup-img{
-        width: 40%;
-    }
-    .removeBtn{
-        width: 30%;
-    }
+   
     .openside{
         display: block;
     }
@@ -168,6 +159,66 @@
  .brand-name{
     font-size: 20px;
 }
+.circle{
+    display: none;
+  }
+  .mycartitems{
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    text-decoration: underline;
+    padding: 3px 0px;
+    text-align: center;
+    flex-direction: column;
+}
+
+.mycartitems span img{
+    width: 90%;
+    border-radius: 10px;
+}
+.popup-content {
+    width: 100%;    
+    height: 100%;
+   
+}
+.removeBtn{
+    width: 40%;
+    margin: 5px 0px;
+}
+.cancel-btn{
+    padding: 10px 80px;
+    margin: 5px 0px;
+}
+.curentorderslist li{
+    display: inline-block;
+    text-decoration: underline;
+ }
+ .curentorderslist{
+    width: 100%;
+    height: auto;
+    background-color: #efeeead6;
+    margin: 10px 0px;
+    display: block;
+}
+
+.login-container{
+    display: flex;
+    flex-direction: column-reverse;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+.login-img{
+    display: none;
+}
+.login-img img{
+    display: none;
+}
+.login-content{
+    width: 100%;
+    height: 100%;
+}
+
   }
   
   /* Media query for screens between 601px and 900px (typical tablets) */
@@ -287,6 +338,21 @@
 .brand-name{
     font-size: 23px;
 }
+.circle{
+  display: none;
+}
+.curentorderslist{
+    width: 100%;
+    height: auto;
+    background-color: #efeeead6;
+    margin: 10px 0px;
+    display: block;
+}
+
+.curentorderslist li{
+   display: inline-block;
+}
+
 
   }
   

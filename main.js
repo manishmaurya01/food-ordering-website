@@ -377,9 +377,10 @@ function getCurrentOrders() {
                             const orderItem = document.createElement('div');
                             orderItem.classList.add('curentorderslist');
                             orderItem.innerHTML = `
+                            <li class=''my-o-img><img class='current-o-img' src='${order.orderimg}'></li>
                                 <li>${order.foodName}</li>
                                 <li>${order.orderPrice}</li>
-                                <li>${order.orderDate}</li>
+                                <li>${order.orderDate}</li> 
                                 <li>${order.orderTime}</li>
                                 <li>${order.orderStatus}</li>
                                 <button class='cancel-btn' data-order-id='${orderId}'>Cancel</button>
@@ -537,7 +538,7 @@ function isUserLoggedIn() {
 // Updated addToCart function
 function addToCart(foodName, img, price, cardDetails) {
     if (!isUserLoggedIn()) {
-        alert("Please log in to add items to the cart.");
+        displayPopup('loginpopup')
         return;
     }
 
@@ -576,6 +577,7 @@ function updateCartPopup() {
     // Iterate through cartItems and display each item
     cartItems.forEach((item) => {
         const itemDiv = document.createElement('div');
+        itemDiv.classList.add('mycartitems')
         itemDiv.innerHTML = `<span> <img src="${item.img}" alt="item" class="popup-img"></span>
                             <p>${item.foodName} - ₹${item.price} </p>
                             <button class="removeBtn" data-id="${item.id}">Remove</button>`;

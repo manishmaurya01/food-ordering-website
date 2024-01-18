@@ -116,7 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Main Event Listeners
-    addCardBtn.addEventListener('click', () => displayPopup('addcard-popup'));
+    // addCardBtn.addEventListener('click', () => displayPopup('addcard-popup'));
+
     cartBtn.addEventListener('click', () => displayPopup('cartPopup'));
     category.addEventListener('change', () => {
         document.getElementById('search-inp').value = ''
@@ -308,6 +309,7 @@ const userEmail = user.email
           list.classList.remove('card');
           list.classList.add('curentorderslist');
           list.innerHTML = `
+          <li class=''my-o-img><img class='current-o-img' src='${ele.orderimg}'></li>
           <li>${ele.foodName}</li>
           <li>${ele.orderPrice}</li>
           <li>${ele.orderDate}</li>
@@ -614,6 +616,7 @@ function updateCartPopup() {
     // Iterate through cartItems and display each item
     cartItems.forEach((item) => {
         const itemDiv = document.createElement('div');
+        itemDiv.classList.add('mycartitems')
         itemDiv.innerHTML = `<span> <img src="${item.img}" alt="item" class="popup-img"></span>
                             <p>${item.foodName} - 	&#8377;${item.price} </p>
                             <button class="removeBtn" data-id="${item.id}">Remove</button>`;
@@ -677,8 +680,8 @@ function isUserLoggedIn() {
 
 // Updated addToCart function
 function addToCart(foodName, img, price, cardDetails) {
-    if (!isUserLoggedIn()) {
-        alert("Please log in to add items to the cart.");   
+    if (!isUserLoggedIn()) { 
+        displayPopup('loginpopup')
         return;
     }
 
@@ -717,6 +720,7 @@ function displayCartPopup() {
     // Iterate through cartItems and display each item
     cartItems.forEach((item, index) => {
         const itemDiv = document.createElement('div');
+        itemDiv.classList.add('mycartitems')
         itemDiv.innerHTML = `<span> <img src="${item.img}" alt="item" class="popup-img"></span>
                              <p>${item.foodName} - 	&#8377;${item.price} </p>
                              <button class="removeBtn">Remove</button>`;

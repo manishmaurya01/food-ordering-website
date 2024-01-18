@@ -7,13 +7,21 @@
     --button-hover-background: rgb(71, 75, 78);
   }
 * {
-    margin: 0;
+    margin: 0;  
     padding: 0;
     box-sizing: border-box;
 }
 body{
     background-color: rgb(248, 247, 246);
 }
+    .circle{
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(20, 196, 161, 0.453);
+        clip-path: circle(39.2% at 0 0);
+        position: absolute;
+        z-index: -100;
+    }
 .openside{
     display: none;
     color: black;
@@ -288,123 +296,6 @@ body{
 }
 
 
-
-.main-slider-wrapper{
-    display: flex;
-    justify-content: center;
-    box-shadow: 20px 20px 60px rgba(0, 0, 0, 0.174), -20px -20px 60px rgba(255, 255, 255, 0.22) inset;
-    border-radius: 20px;
-}
-
- .special-deal-wrapper {
-  position: relative;
-  height: 100%;
-}
-
-.special-deal-wrapper  {
-  /* background: #eee; */
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  color: #000;
-  margin: 0;
-  padding: 0;
-}
-
-.special-deal-wrapper {
-  background: #fff;
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  color: #000;
-  margin: 0;
-  padding: 0;
-}
-
-.special-deal-wrapper  {
-  position: relative;
-  height: 100%;
-}
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-swiper-container {
-  width: 240px;
-  height: 320px;
-}
-
-swiper-slide {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 18px;
-  font-size: 22px;
-  font-weight: bold;
-  color: #fff;
-}
-
-swiper-slide:nth-child(1n) {
-  background-color: rgb(206, 17, 17);
-}
-
-swiper-slide:nth-child(2n) {
-  background-color: rgb(0, 140, 255);
-}
-
-swiper-slide:nth-child(3n) {
-  background-color: rgb(10, 184, 111);
-}
-
-swiper-slide:nth-child(4n) {
-  background-color: rgb(211, 122, 7);
-}
-
-swiper-slide:nth-child(5n) {
-  background-color: rgb(118, 163, 12);
-}
-
-swiper-slide:nth-child(6n) {
-  background-color: rgb(180, 10, 47);
-}
-
-swiper-slide:nth-child(7n) {
-  background-color: rgb(35, 99, 19);
-}
-
-swiper-slide:nth-child(8n) {
-  background-color: rgb(0, 68, 255);
-}
-
-swiper-slide:nth-child(9n) {
-  background-color: rgb(218, 12, 218);
-}
-
-swiper-slide:nth-child(10n) {
-  background-color: rgb(54, 94, 77);
-}
-
-.discount-box{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: space-around;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-.coupon-no{
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-
-
-
-
-
-
 .populer-items{
     width: 100%;
     height: 100%;
@@ -597,6 +488,8 @@ swiper-slide:nth-child(10n) {
     border: 1px solid;
     cursor: pointer;
     transition: 0.3s;
+    margin: 5px;
+
     
 }
 .fillter:hover{
@@ -713,18 +606,28 @@ footer{
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);   
     background: white;
     padding: 20px;
-    width: 60%;
-    height: 75%;
-    border-radius: 10px;
+    width: 100%;
+    height: 100%;
     overflow: auto;
     text-align: center;
     box-shadow: 20px 20px 60px rgba(255, 255, 255, 0.248), -20px -20px 60px rgba(0, 0, 0, 0.199) inset;
 }
-
-
+.mycartitems{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: underline;
+}
+.mycartitems span{
+    width: 30%;
+}
+.mycartitems span img{
+    width: 60%;
+    border-radius: 10px;
+}
 .close,.open {
     position: absolute;
     top: -10px;
@@ -839,6 +742,7 @@ footer{
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
     
+
 /* Style for the fixed order summary box */
 .order-summary-box {
     width: 100%;
@@ -847,12 +751,12 @@ footer{
     top: 0%;
     left: 0%;
     background-color: white;
-    padding: 10px;
     border-top: 2px solid #ccc;
     display: none;
     border-radius: 10px;
     transition: 0.3s;
     overflow: scroll;
+    z-index: 2000;
 
 }
 
@@ -910,7 +814,6 @@ footer{
 #currentOrders{
     width: 100%;
     height: auto;
-    /* background-color: #e0e0e0; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -945,11 +848,11 @@ footer{
 }
 
 #siguppopup{
-    width: 50%;
-    height: 97vh;
+    width: 100%;
+    height: 100vh;
     position: fixed;
-    bottom: 2%;
-    left: 27%;
+    left: 0%;
+    top: 0;
     z-index: 2000;
     border-radius: 10px;
     background-color: #ffffff;
@@ -979,10 +882,12 @@ footer{
     height: 50vh;
     text-align: center;
     padding: 20px 0px;
+    
 }
 .signup-btns button{
     width: 20%;
     height: 20%;
+    cursor: pointer;
 }
 .signup{
     text-align: center;
@@ -1074,3 +979,78 @@ align-items: center;
     color: beige;
 }
 
+.siguppopupbkg{
+    display: none;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.739);
+    z-index: 1500;
+}
+.loginpopupbkg{
+    display: none;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.739);
+    z-index: 1500;
+    
+}
+#siguppopup{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    left: 0%;
+    top: 0;
+    z-index: 2000;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 100px rgba(255, 255, 255, 0.057), -20px -20px 100px rgba(0, 0, 0, 0.222) inset;
+    border-radius: 0;
+    
+}
+
+#loginpopup{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    left: 0%;
+    top: 0;
+    z-index: 2000;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 100px rgba(255, 255, 255, 0.057), -20px -20px 100px rgba(0, 0, 0, 0.222) inset;
+    border-radius: 0;
+   
+    
+}
+.login-container{
+    display: flex;
+    justify-content: space-around;
+    height: 100%;
+    width: 100%;
+}
+.login-img{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login-img img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 20px;
+}
+.login-content{
+    width: 50%;
+    height: 90%;
+    background-color: #e6e7ec;
+    border-radius: 30px;
+}
+.current-o-img{
+    width: 100px;
+    border-radius: 10px;
+     
+ }

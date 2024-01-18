@@ -64,7 +64,6 @@ body {
     color: black;
     font-size: 35px;
     font-weight: 700;
-    font-family: cursive;
     padding: 0px 10px;
     cursor: pointer;
    float: left;
@@ -72,7 +71,7 @@ body {
 
 .filter-section{
     font-size: 17px;
-    height: 15%;
+    height: 40%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -130,21 +129,36 @@ nav {
     cursor: pointer;
 }
 .addToCartBtn,
-#addCardBtn,.cancel-btn,#side-signupBtn,#side-loginBtn,#side-logoutBtn,.internal-links li {
+#addCardBtn,.cancel-btn,#side-signupBtn,#side-loginBtn,#side-logoutBtn,.internal-links li{
   padding: 1.5vh 1vw;
   border-radius: 10px;
   border: 1px solid;
   font-weight: 700;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  cursor: pointer;
   background-color: var(--button-background);
   transition: 0.4s;
   text-wrap: nowrap;
+  cursor: pointer;
 }
 
 
 .addToCartBtn:hover,
 #addCardBtn:hover,.cancel-btn:hover,#side-signupBtn:hover,#side-loginBtn:hover,#side-logoutBtn:hover,.internal-links li:hover {
+  background-color: var(--button-hover-background);
+  color: white;
+}
+.my-btn{
+  padding: 1.5vh 1vw;
+  border-radius: 10px;
+  border: 1px solid;
+  font-weight: 700;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  background-color: var(--button-background);
+  transition: 0.4s;
+  text-wrap: nowrap;
+  cursor: pointer;
+}
+.my-btn:hover {
   background-color: var(--button-hover-background);
   color: white;
 }
@@ -277,6 +291,7 @@ nav {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.856);
+    z-index: 2000;
 }
 
 .buy-popup-con{
@@ -289,20 +304,33 @@ nav {
     background: rgba(0, 0, 0, 0.856);
 }
 
+
 .popup-content {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background: white;
-    padding: 20px;
-    width: 60%;
-    height: 75%;
-    border-radius: 10px;
+    width: 100%;
+    height: 100vh;
     overflow: auto;
     text-align: center;
     box-shadow: 20px 20px 60px rgba(255, 255, 255, 0.248), -20px -20px 60px rgba(0, 0, 0, 0.199) inset;
 }
+.mycartitems{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: underline;
+}
+.mycartitems span{
+    width: 30%;
+}
+.mycartitems span img{
+    width: 60%;
+    border-radius: 10px;
+}
+
 
 
 .close,.open {
@@ -539,15 +567,15 @@ nav {
     width: 100%;
     height: 100%;
     position: fixed;
-    top: 9%;
+    top: 0%;
     left: 0%;
     background-color: white;
-    padding: 15px;
     border-top: 2px solid #ccc;
     display: none;
     border-radius: 10px;
     transition: 0.3s;
     overflow: scroll;
+    z-index: 2000;
 
 }
 
@@ -570,7 +598,7 @@ nav {
 
 .orders {
   padding: 3vh 1.5vw;
-  border-radius: 10px;
+  border-radius: 10px;  
   border: 1px solid;
   font-weight: 700;
   font-family: cursive;
@@ -586,7 +614,11 @@ nav {
   box-shadow: 15px 10px 150px rgba(0, 0, 0, 0.614), -20px -20px 60px rgba(245, 222, 179, 0.548) inset;
   
 }
-
+.current-o-img{
+   width: 100px;
+   border-radius: 10px;
+    
+}
 #orders:hover {
   background-color: var(--button-hover-background);
   color: white;
@@ -617,15 +649,21 @@ nav {
     height: auto;
     background-color: #efeeead6;
     margin: 10px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
 }
 
 
-.curentorderslist li{
-    height: auto;
-    list-style: none;
-   padding: 20px 30px;
-    display: inline-block;
-}
+    .curentorderslist li{
+        height: auto;
+        list-style: none;
+    padding: 20px 25px;
+    
+
+    }
+
 
 .siguppopupbkg{
     display: none;
@@ -644,16 +682,16 @@ nav {
     top: 0;
     background-color: rgba(0, 0, 0, 0.739);
     z-index: 1500;
+    
 }
 
 #siguppopup{
-    width: 50%;
-    height: 97vh;
+    width: 100%;
+    height: 100vh;
     position: fixed;
-    bottom: 2%;
-    left: 27%;
+    left: 0%;
+    top: 0;
     z-index: 2000;
-    border-radius: 10px;
     background-color: #ffffff;
     box-shadow: 0px 0px 100px rgba(255, 255, 255, 0.057), -20px -20px 100px rgba(0, 0, 0, 0.222) inset;
     
@@ -715,16 +753,41 @@ nav {
 }
 
 #loginpopup{
-    width: 50%;
-    height: 97vh;
+    width: 100%;
+    height: 100vh;
     position: fixed;
-    bottom: 2%;
-    left: 27%;
+    left: 0%;
+    top: 0;
     z-index: 2000;
-    border-radius: 10px;
     background-color: #ffffff;
     box-shadow: 0px 0px 100px rgba(255, 255, 255, 0.057), -20px -20px 100px rgba(0, 0, 0, 0.222) inset;
+   
     
+}
+.login-container{
+    display: flex;
+    justify-content: space-around;
+    height: 100%;
+    width: 100%;
+}
+.login-img{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login-img img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 20px;
+}
+.login-content{
+    width: 50%;
+    height: 90%;
+    background-color: #e6e7ec;
+    border-radius: 30px;
 }
 #siguppopup,#loginpopup{
     display: none;
@@ -855,3 +918,5 @@ cursor: pointer;
     padding: 10px 5px;
     text-decoration: none;
 }
+
+
