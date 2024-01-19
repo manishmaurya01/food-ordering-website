@@ -369,6 +369,7 @@ function getCurrentOrders() {
                                 <li>${ele.orderPrice}</li>
                                 <li>${ele.orderDate}</li>
                                 <li>${ele.orderTime}</li>
+                                <li>${ele.useraddress}</li>
                                 <li>${ele.orderStatus}</li>
                                 <button class='cancel-btn' data-order-id='${orderId}'>Cancel</button>
                             `;
@@ -585,54 +586,80 @@ function buyNow() {
         closePopup('cartPopup');
     } else {
         closePopup('cartPopup');
-        totalPrice = 0;
-        document.getElementById('totalItems').textContent = cartItems.length;
-        // document.getElementById('totalItem').textContent = cartItems.length;
+        document.querySelector('#user-addresscon').style.display = 'block';
 
-        // Copy cartItems to a new array to avoid modifying the original array in the loop
-        const orderedItems = [...cartItems];
-
-        // Clear cartItems
-        cartItems = [];
-        document.getElementById('totalItems').textContent = cartItems.length;
-        // document.getElementById('totalItem').textContent = cartItems.length;
-
-        // Update local storage after clearing the cart
-        updateCartLocalStorage();
-
-        orderedItems.forEach((order) => {
-            const user = getAuth().currentUser;
-        
-            if (!user) {
-                alert("Please log in to place an order.");
-                return; // Stop processing further orders if the user is not logged in
-            }
-        
-            const userEmail = user.email;
-        
-            order = {
-                userEmail: userEmail,
-                orderimg: order.img,
-                orderName: order.cardDetails,
-                foodName: order.foodName,
-                orderPrice: parseFloat(order.price),  // Convert order price to float
-                orderDate: getCurrentDate(),
-                orderTime: getCurrentTime12Hour(),
-                orderStatus: "Pending"
-            };
-        
-            addOrderToFirebase(order);
-               // Play the notification sound
-    const notificationSound = document.getElementById('notificationSound');
-    notificationSound.play();
-
+        // Use a Promise to handle the address input
+        const addressPromise = new Promise((resolve, reject) => {
+            document.querySelector('#Done').addEventListener('click', () => {
+                const address = document.querySelector('#user-address').value;
+                if (address.trim() !== '') {
+                    resolve(address);
+                    document.querySelector('#user-addresscon').style.display = 'none';
+                } else {
+                    reject("Address cannot be empty.");
+                    document.querySelector('#user-addresscon').style.display = 'none';
+                }
+            });
         });
-        updateCartPopup();
-        // Optionally, you can update the cart popup here
+
+        // Execute code after the address is obtained
+        addressPromise.then((address) => {
+            console.log("Address:", address);
+            // Your additional code goes here
+
+            totalPrice = 0;
+            document.getElementById('totalItems').textContent = cartItems.length;
+
+            // Copy cartItems to a new array to avoid modifying the original array in the loop
+            const orderedItems = [...cartItems];
+
+            // Clear cartItems
+            cartItems = [];
+            document.getElementById('totalItems').textContent = cartItems.length;
+
+            // Update local storage after clearing the cart
+            updateCartLocalStorage();
+
+            orderedItems.forEach((order) => {
+                const user = getAuth().currentUser;
+
+                if (!user) {
+                    alert("Please log in to place an order.");
+                    return; // Stop processing further orders if the user is not logged in
+                }
+
+                const userEmail = user.email;
+
+                order = {
+                    useraddress: address,
+                    userEmail: userEmail,
+                    orderimg: order.img,
+                    orderName: order.cardDetails,
+                    foodName: order.foodName,
+                    orderPrice: parseFloat(order.price),  // Convert order price to float
+                    orderDate: getCurrentDate(),
+                    orderTime: getCurrentTime12Hour(),
+                    orderStatus: "Pending"
+                };
+
+                addOrderToFirebase(order);
+
+                // Play the notification sound
+                const notificationSound = document.getElementById('notificationSound');
+                notificationSound.play();
+            });
+
+            updateCartPopup();
+            // Optionally, you can update the cart popup here
+        }).catch((error) => {
+            alert(error);
+            // Handle the case where the user didn't provide a valid address
+            closePopup('user-addresscon');
+        });
     }
 }
 
-// ... (your existing code)
+
 
 // Function to add a new order to Firebase
 function addOrderToFirebase(order) {
