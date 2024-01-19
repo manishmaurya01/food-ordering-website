@@ -51,7 +51,6 @@ function fetchDataFromFirebaseAndLog() {
                     
                     data.forEach(item => {
                         if(item.food_ratings > '4.7'){
-                            console.log(item);
                             const itemDiv = createCardElement(item);
                             cards.appendChild(itemDiv);
                         }
@@ -81,8 +80,6 @@ function addlenght() {
                 document.querySelector('.fasti').textContent = data['fastfood'].length +'items'
                 document.querySelector('.lunchi').textContent = data['lunch'].length +'items'
                 document.querySelector('.dinneri').textContent = data['dinner'].length +'items'
-                console.log(data)
-                
                 }
             });
 }
@@ -172,15 +169,8 @@ function addToCartAndUpdateLocalStorage(foodName, img, price, cardDetails,unique
 
     // const uniqueId = `Card-${cartItems.length + 1}-${Date.now()}`;
     const newItem = { id: uniqueId, foodName, img, price: parsedPrice, cardDetails };
-
-    // Update the cartItems array
-    // cartItems.push(newItem);
-
-    // Save the updated cartItems to local storage
+    // Save the updated cartItems to local storage8
     updateCartLocalStorage();
-
-    // Optionally, you can display a confirmation or update the UI here
-    console.log("Item added to cart:", newItem);
 }
 
 
@@ -207,9 +197,6 @@ function checkAuthState() {
     onAuthStateChanged(auth, (user) => {
         getCurrentOrders();
         if (user) {
-            // User is signed in
-            console.log("User is signed in:", user.email);
-            // document.querySelector('#profilename').style.display='block'
             closesignupBtn();
             document.getElementById('side-loginBtn').style.display = 'none'
             document.querySelector('#profilename').innerHTML = user.email
@@ -217,8 +204,6 @@ function checkAuthState() {
             document.getElementById('side-logoutBtn').style.display='block'
             // document.querySelector('.login-loading').style.display='none'
         } else {
-            // User is signed out
-            console.log("User is signed out");
             document.querySelector('#profilename').textContent = ''
             document.getElementById('side-logoutBtn').style.display = 'none'
             document.getElementById('side-loginBtn').style.display = 'block'
@@ -361,7 +346,6 @@ function getCurrentOrders() {
     const user = getAuth().currentUser;
 
     if (user) {
-        console.log(user.email);
         const userEmail = user.email;
         const database = getDatabase(app);
         const ordersRef = ref(database, 'orders');
@@ -378,7 +362,6 @@ function getCurrentOrders() {
                     const ordersArray = ordersData ? Object.entries(ordersData) : [];
                     // const userOrders = ordersArray.filter(([orderId, ele]) => ele.userEmail === userEmail);
 
-                    console.log('Total Orders:', ordersArray.length);
                     const userOrders = ordersArray.filter(([orderId, ele]) => ele.userEmail === userEmail && ele.orderStatus !== 'Accepted');
                     if (userOrders.length > 0) {
                         document.getElementById('totalItem').textContent = userOrders.length;

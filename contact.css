@@ -45,7 +45,7 @@ body{
     font-weight: 550;
     color: black;
 }
-.ultag :nth-child(4) a{
+.ultag :nth-child(5) a{
     color: rgb(237, 66, 24);
 }
 
@@ -167,10 +167,6 @@ textarea {
     width: 70%;
     height: 70%;
 }
-
-
-
-
 footer{
     width: 100%;
     height: 100%;
