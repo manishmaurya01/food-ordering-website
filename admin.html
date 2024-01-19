@@ -191,24 +191,22 @@ canvas {
     </div>
 
     <script>
-        // Initialize Firebase (already included in firebase-config.js)
-        // Firebase Configuration is included in the head
-
-        // Get a reference to the Firebase Realtime Database
-        const database = firebase.database();
- // Get a reference to the Firebase Authentication
- const auth = firebase.auth();
-
+     
+// Get a reference to the Firebase Authentication
+const auth = firebase.auth();
+  
 // User Management - Total Users
 auth.onAuthStateChanged((user) => {
-    if (user) {
+    if(user) {
+
+    if (user.email === 'manish@gmail.com') {
+           
+        const database = firebase.database();
+ 
+
         // User is signed in
         displayAllUsers();
-    } else {
-        // No user is signed in
-        document.getElementById('total-users').textContent = '0';
-    }
-});
+
 
 // Inside displayAllUsers() function
 function displayAllUsers() {
@@ -238,16 +236,15 @@ function displayAllUsers() {
     });
 }
 
+// Order Management
+const ordersRef = database.ref('orders');
+const orderList = document.getElementById('order-list');
 
+ordersRef.on('value', (snapshot) => {
+    renderOrderList(snapshot);
+});
 
-        // Order Management
-        const ordersRef = database.ref('orders');
-        const orderList = document.getElementById('order-list');
-
-        ordersRef.on('value', (snapshot) => {
-            renderOrderList(snapshot);
-        });
-        function renderOrderList(snapshot) {
+function renderOrderList(snapshot) {
     orderList.innerHTML = '';
 
     snapshot.forEach((childSnapshot) => {
@@ -263,14 +260,19 @@ function displayAllUsers() {
             <span>Status: ${order.useraddress}</span>&nbsp;
             <span>Date: ${order.orderDate}</span>&nbsp;
             <span>Time: ${order.orderTime}</span>&nbsp;
-            <button onclick="editOrder('${orderId}')">Edit Order</button>&nbsp;
-            <button onclick="acceptOrder('${orderId}')">Accept Order</button>&nbsp;
-            <button onclick="rejectOrder('${orderId}')">Reject Order</button>&nbsp;
+            <button class="edit-order-btn">Edit Order</button>&nbsp;
+            <button class="accept-order-btn">Accept Order</button>&nbsp;
+            <button class="reject-order-btn">Reject Order</button>&nbsp;
         `;
+
+        listItem.querySelector('.edit-order-btn').addEventListener('click', () => editOrder(orderId));
+        listItem.querySelector('.accept-order-btn').addEventListener('click', () => acceptOrder(orderId));
+        listItem.querySelector('.reject-order-btn').addEventListener('click', () => rejectOrder(orderId));
 
         orderList.appendChild(listItem);
     });
 }
+
 function acceptOrder(orderId) {
     updateOrderStatus(orderId, 'Accepted');
 }
@@ -284,12 +286,28 @@ function updateOrderStatus(orderId, newStatus) {
 }
 
 
+
         function editOrder(orderId) {
             const newStatus = prompt('Enter new order status:');
             if (newStatus !== null) {
                 ordersRef.child(orderId).update({ orderStatus: newStatus });
             }
         }
+
+    }  else {
+        window.location.href = 'redirect.html';
+        // No user is signed in
+        document.getElementById('total-users').textContent = '0';
+
+    }
+}
+     else {
+        window.location.href = 'redirect.html';
+        // No user is signed in
+        document.getElementById('total-users').textContent = '0';
+
+    }
+});
     </script>
 </body>
 
