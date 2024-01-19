@@ -651,22 +651,40 @@ function removeItem(id) {
         }
     }
 }
-// cencle order directly in database
+// Cancel order directly in the database
 function cancelOrder(orderId) {
 
-    // Assuming you have a reference to the 'orders' node in your Firebase database
+    // Assuming you have a reference to the 'orders' and 'canceledOrders' nodes in your Firebase database
     const orderRef = ref(getDatabase(app), `orders/${orderId}`);
+    const canceledOrdersRef = ref(getDatabase(app), 'canceledOrders');
 
-    // Remove the order from the database
-    remove(orderRef)
-        .then(() => {
-            getCurrentOrders();
-            document.getElementById('notificationSound').play();
+    // Get the order data before removing it
+    get(orderRef)
+        .then((orderSnapshot) => {
+            const orderData = orderSnapshot.val();
+
+            // Remove the order from the 'orders' node
+            remove(orderRef)
+                .then(() => {
+                    // Add the canceled order to the 'canceledOrders' node
+                    push(canceledOrdersRef, orderData)
+                        .then(() => {
+                            getCurrentOrders();
+                            document.getElementById('notificationSound').play();
+                        })
+                        .catch((error) => {
+                            console.error('Error adding canceled order to canceledOrders:', error.message);
+                        });
+                })
+                .catch((error) => {
+                    console.error('Error canceling order:', error.message);
+                });
         })
         .catch((error) => {
-            console.error('Error canceling order:', error.message);
+            console.error('Error getting order data:', error.message);
         });
 }
+
 
 
 // Function to update the cart in local storage and display the cart popup

@@ -12,182 +12,273 @@
     <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
     <script src="/firebaseconfig.js"></script>
 
-    <!-- Chart.js -->
+
+    <!-- Chart.js for Bar Charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
     <style>
-   body {
-    font-family: 'Arial', sans-serif;
-    margin: 20px;
-    background-color: #f8f9fa;
-}
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
 
-#dashboard {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
+        #dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
 
-.section {
-    flex: 1 1 100%;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
+        .section {
+            flex: 1 1 100%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
 
-h2 {
-    margin-bottom: 10px;
-    color: #495057;
-}
+        h2 {
+            margin-bottom: 10px;
+            color: #495057;
+        }
 
-.list {
-    list-style: none;
-    padding: 0;
-}
+        .list {
+            list-style: none;
+            padding: 0;
+        }
 
-button {
-    cursor: pointer;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-}
+        button {
+            cursor: pointer;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
 
-button:hover {
-    background-color: #45a049;
-}
+        button:hover {
+            background-color: #45a049;
+        }
 
-input {
-    padding: 8px;
-    margin-bottom: 10px;
-}
+        input {
+            padding: 8px;
+            margin-bottom: 10px;
+        }
 
-canvas {
-    max-width: 100%;
-    height: auto;
-}
-/* Add the following CSS for improved Order Management layout */
-#order-management {
-    flex: 1 1 100%;
-}
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
 
-#order-list {
-    padding: 0;
-}
+        /* Add the following CSS for improved Order Management layout */
+        #order-management {
+            flex: 1 1 100%;
+        }
 
-.order-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
+        #order-list {
+            padding: 0;
+        }
 
-.order-images {
-    width: 100px; /* Adjust the width of the order images */
-    height: auto;
-    margin-right: 10px; /* Add margin for better spacing */
-    border-radius: 10px;
-}
+        .order-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
 
-.order-item button {
-    margin-left: auto; /* Push buttons to the right */
-}
+        .order-images {
+            width: 100px;
+            /* Adjust the width of the order images */
+            height: auto;
+            margin-right: 10px;
+            /* Add margin for better spacing */
+            border-radius: 10px;
+        }
 
-.order-item span {
-    flex: 1; /* Distribute remaining space equally among spans */
-}
+        .order-item button {
+            margin-left: auto;
+            /* Push buttons to the right */
+        }
 
-/* Adjustments for better responsiveness */
-@media (max-width: 768px) {
-    .order-images {
-        width: 30px; /* Adjust the width of the order images for smaller screens */
-    }
+        .order-item span {
+            flex: 1;
+            /* Distribute remaining space equally among spans */
+        }
 
-    .order-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+        /* Adjustments for better responsiveness */
+        @media (max-width: 768px) {
+            .order-images {
+                width: 30px;
+                /* Adjust the width of the order images for smaller screens */
+            }
 
-    .order-item button {
-        margin-left: 0;
-        margin-top: 10px; /* Add margin for better spacing */
-    }
-}
+            .order-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .order-item button {
+                margin-left: 0;
+                margin-top: 10px;
+                /* Add margin for better spacing */
+            }
+        }
 
 
-/* Additional Styles for Improved Layout */
-#user-management,
-#order-management {
-    margin-right: 10px;
-}
+        /* Additional Styles for Improved Layout */
+        #user-management,
+        #order-management {
+            margin-right: 10px;
+        }
 
-#dashboard {
-    justify-content: space-between;
-}
-/* Add the following CSS for table styling */
-#user-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
+        #dashboard {
+            justify-content: space-between;
+        }
 
-#user-table th, #user-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-}
+        /* Add the following CSS for table styling */
+        #user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
 
-#user-table th {
-    background-color: #f2f2f2;
-}
+        #user-table th,
+        #user-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
 
-#user-list tr:hover {
-    background-color: #f5f5f5;
-}
-.navbar{
-    width: 100%;
-    height: 10%;
-    position: fixed;
-    top: 0;
-    background-color: #ccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.ultag li{
-    display: inline-block;
-}
-.ultag{
-    list-style: none;
-}
-.ultag li a{
-    text-decoration: none;
-    color: black;
-    padding: 10px;
-    font-weight: 700;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-.ultag li a:hover{
-    text-decoration: underline;
-    color: rgb(210, 73, 14);
-}
+        #user-table th {
+            background-color: #f2f2f2;
+        }
 
-@media (min-width: 768px) {
-    .section {
-        flex: 1 1 calc(50% - 10px);
-    }
-}
+        #user-list tr:hover {
+            background-color: #f5f5f5;
+        }
 
+        .navbar {
+            width: 100%;
+            height: 10%;
+            position: fixed;
+            top: 0;
+            background-color: #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ultag li {
+            display: inline-block;
+        }
+
+        .ultag {
+            list-style: none;
+        }
+
+        .ultag li a {
+            text-decoration: none;
+            color: black;
+            padding: 10px;
+            font-weight: 700;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        .ultag li a:hover {
+            text-decoration: underline;
+            color: rgb(210, 73, 14);
+        }
+
+        #hourly-orders-chart,
+        #daily-orders-chart {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        #item-management {
+            flex: 1 1 100%;
+        }
+
+        #item-list {
+            padding: 0;
+        }
+
+        .item-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .item-item button {
+            cursor: pointer;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .item-item button:hover {
+            background-color: #45a049;
+        }
+
+        /* Additional styles for better spacing */
+        .item-item span {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        /* Table styling */
+        #item-list {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        #item-list th,
+        #item-list td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        #item-list th {
+            background-color: #f2f2f2;
+        }
+
+        #item-list tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .item-item.editable input {
+            display: inline-block;
+        }
+
+        .item-item.editable span {
+            display: none;
+        }
+
+
+        @media (min-width: 768px) {
+            .section {
+                flex: 1 1 calc(50% - 10px);
+            }
+        }
     </style>
 </head>
 
@@ -217,82 +308,125 @@ canvas {
                 <tbody id="user-list"></tbody>
             </table>
         </div>
-        
+
 
         <div class="section" id="order-management">
             <h2>Order Management</h2>
             <ul class="list" id="order-list"></ul>
         </div>
+        <div class="section" id="canceled-order-management">
+            <h2>Canceled Orders</h2>
+            <ul class="list" id="canceled-order-list"></ul>
+        </div>
+        <div class="section" id="hourly-orders-chart-section">
+            <h2>Hourly Orders Chart</h2>
+            <canvas id="hourly-orders-chart"></canvas>
+        </div>
+        <div class="section" id="item-management">
+            <h2>Item Management</h2>
+            <ul class="list" id="item-list"></ul>
+            <div id="add-item-section">
+                <h3>Add New Item</h3>
+                <div>
+                    <label for="new-food-name">Name:</label>
+                    <input type="text" id="new-food-name">
+                </div>
+                <div>
+                    <label for="new-food-price">Price:</label>
+                    <input type="text" id="new-food-price">
+                </div>
+                <div>
+                    <label for="new-food-ratings">ratings:</label>
+                    <input type="text" id="new-food-ratings">
+                </div>
+                <div>
+                    <label for="new-food-img">img:</label>
+                    <input type="text" id="new-food-img">
+                </div>
+                <div>
+                    <label for="new-category">Category:</label>
+                    <input type="text" id="new-category">
+                </div>
+                <div>
+                    <label for="new-food-desc">Description:</label>
+                    <input type="text" id="new-food-desc">
+                </div>
+                <button id="add-item-btn">Add Item</button>
+            </div>
+        </div>
+        
+
+
     </div>
 
     <script>
-     
-// Get a reference to the Firebase Authentication
-const auth = firebase.auth();
-  
-// User Management - Total Users
-auth.onAuthStateChanged((user) => {
-    if(user) {
 
-    if (user.email === 'manish@gmail.com') {
-           
-        const database = firebase.database();
- 
+        // Get a reference to the Firebase Authentication
+        const auth = firebase.auth();
 
-        // User is signed in
-        displayAllUsers();
+        // User Management - Total Users
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+
+                if (user.email === 'manish@gmail.com') {
+
+                    const database = firebase.database();
 
 
-// Inside displayAllUsers() function
-function displayAllUsers() {
-    const userListElement = document.getElementById('user-list');
-    const totalUsersElement = document.getElementById('total-users');
+                    // User is signed in
+                    displayAllUsers();
 
-    // Clear existing rows
-    userListElement.innerHTML = '';
 
-    const usersRef = database.ref('users');
+                    // Inside displayAllUsers() function
+                    function displayAllUsers() {
+                        const userListElement = document.getElementById('user-list');
+                        const totalUsersElement = document.getElementById('total-users');
 
-    usersRef.on('value', (snapshot) => {
-        snapshot.forEach((userSnapshot) => {
-            const userData = userSnapshot.val();
-            const userId = userSnapshot.key;
-            const userEmail = userData.email;
+                        // Clear existing rows
+                        userListElement.innerHTML = '';
 
-            // Create a new row in the table
-            const newRow = userListElement.insertRow();
-            newRow.innerHTML = `
+                        const usersRef = database.ref('users');
+
+                        usersRef.on('value', (snapshot) => {
+                            snapshot.forEach((userSnapshot) => {
+                                const userData = userSnapshot.val();
+                                const userId = userSnapshot.key;
+                                const userEmail = userData.email;
+
+                                // Create a new row in the table
+                                const newRow = userListElement.insertRow();
+                                newRow.innerHTML = `
                 <td>${userId}</td>
                 <td>${userEmail}</td>
             `;
-        });
+                            });
 
-        totalUsersElement.textContent = snapshot.numChildren();
-    });
-}
+                            totalUsersElement.textContent = snapshot.numChildren();
+                        });
+                    }
 
-// Order Management
-const ordersRef = database.ref('orders');
-const orderList = document.getElementById('order-list');
+                    // Order Management
+                    const ordersRef = database.ref('orders');
+                    const orderList = document.getElementById('order-list');
 
-ordersRef.on('value', (snapshot) => {
-    renderOrderList(snapshot);
-});
+                    ordersRef.on('value', (snapshot) => {
+                        renderOrderList(snapshot);
+                    });
 
-function renderOrderList(snapshot) {
-    orderList.innerHTML = '';
+                    function renderOrderList(snapshot) {
+                        orderList.innerHTML = '';
 
-    snapshot.forEach((childSnapshot) => {
-        const order = childSnapshot.val();
-        const orderId = childSnapshot.key;
+                        snapshot.forEach((childSnapshot) => {
+                            const order = childSnapshot.val();
+                            const orderId = childSnapshot.key;
 
-        const listItem = document.createElement('li');
-        listItem.className = 'order-item';
-        listItem.innerHTML = `
+                            const listItem = document.createElement('li');
+                            listItem.className = 'order-item';
+                            listItem.innerHTML = `
             <span><img class='order-images' src='${order.orderimg}'></span> &nbsp;
             <span>Ordered by: ${order.userEmail}</span> &nbsp;
             <span>Status: ${order.orderStatus}</span>&nbsp;
-            <span>Status: ${order.useraddress}</span>&nbsp;
+            <span>Address: ${order.useraddress}</span>&nbsp;
             <span>Date: ${order.orderDate}</span>&nbsp;
             <span>Time: ${order.orderTime}</span>&nbsp;
             <button class="edit-order-btn">Edit Order</button>&nbsp;
@@ -300,49 +434,286 @@ function renderOrderList(snapshot) {
             <button class="reject-order-btn">Reject Order</button>&nbsp;
         `;
 
-        listItem.querySelector('.edit-order-btn').addEventListener('click', () => editOrder(orderId));
-        listItem.querySelector('.accept-order-btn').addEventListener('click', () => acceptOrder(orderId));
-        listItem.querySelector('.reject-order-btn').addEventListener('click', () => rejectOrder(orderId));
+                            listItem.querySelector('.edit-order-btn').addEventListener('click', () => editOrder(orderId));
+                            listItem.querySelector('.accept-order-btn').addEventListener('click', () => acceptOrder(orderId));
+                            listItem.querySelector('.reject-order-btn').addEventListener('click', () => rejectOrder(orderId));
 
-        orderList.appendChild(listItem);
-    });
-}
+                            orderList.appendChild(listItem);
+                        });
+                    }
+                    // Canceled Order Management
+                    const canceledOrdersRef = database.ref('canceledOrders');
+                    const canceledOrderList = document.getElementById('canceled-order-list');
 
-function acceptOrder(orderId) {
-    updateOrderStatus(orderId, 'Accepted');
-}
+                    canceledOrdersRef.on('value', (snapshot) => {
+                        renderCanceledOrderList(snapshot);
+                    });
 
-function rejectOrder(orderId) {
-    updateOrderStatus(orderId, 'Rejected');
-}
+                    function renderCanceledOrderList(snapshot) {
+                        canceledOrderList.innerHTML = '';
 
-function updateOrderStatus(orderId, newStatus) {
-    ordersRef.child(orderId).update({ orderStatus: newStatus });
-}
+                        snapshot.forEach((childSnapshot) => {
+                            const canceledOrder = childSnapshot.val();
+                            const canceledOrderId = childSnapshot.key;
+
+                            const listItem = document.createElement('li');
+                            listItem.className = 'order-item';
+                            listItem.innerHTML = `
+            <span><img class='order-images' src='${canceledOrder.orderimg}'></span> &nbsp;
+            <span>Ordered by: ${canceledOrder.userEmail}</span> &nbsp;
+            <span>Status: Canceled</span>&nbsp;
+            <span>Address: ${canceledOrder.useraddress}</span>&nbsp;
+            <span>Date: ${canceledOrder.orderDate}</span>&nbsp;
+            <span>Time: ${canceledOrder.orderTime}</span>&nbsp;
+            <button class="view-canceled-order-btn">View Canceled Order</button>&nbsp;
+        `;
+
+                            listItem.querySelector('.view-canceled-order-btn').addEventListener('click', () => viewCanceledOrder(canceledOrderId));
+
+                            canceledOrderList.appendChild(listItem);
+                        });
+                    }
+
+                    function viewCanceledOrder(canceledOrderId) {
+                        // Implement the logic to view details of a canceled order
+                        // You can use the canceledOrderId to fetch additional details if needed
+                        alert(`View Canceled Order with ID: ${canceledOrderId}`);
+                    }
+
+                    function renderHourlyOrdersChart(data) {
+                        // Check if data is not undefined or null
+                        if (data) {
+                            const labels = Object.keys(data);
+                            const orderCounts = Object.values(data);
+
+                            // Get the 2D context of the hourly orders chart canvas
+                            const hourlyOrdersChartContext = document.getElementById('hourly-orders-chart').getContext('2d');
+
+                            new Chart(hourlyOrdersChartContext, {
+                                type: 'line',
+                                data: {
+                                    labels: labels,
+                                    datasets: [{
+                                        label: 'Hourly Orders',
+                                        data: orderCounts,
+                                        fill: false,
+                                        borderColor: 'rgba(75, 192, 192, 1)',
+                                        borderWidth: 2
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        x: {
+                                            type: 'category',
+                                            labels: labels
+                                        },
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        } else {
+                            console.error('Data is undefined or null.');
+                        }
+                    }
+
+                    function fetchHourlyOrders() {
+                        const hourlyOrdersRef = database.ref('orders');
+
+                        hourlyOrdersRef.on('value', (snapshot) => {
+                            const hourlyOrdersData = snapshot.val();
+
+                            console.log('Fetched data:', hourlyOrdersData);
+
+                            // Check if the data is null or undefined
+                            if (hourlyOrdersData !== null && hourlyOrdersData !== undefined) {
+                                renderHourlyOrdersChart(hourlyOrdersData);
+                            } else {
+                                console.error('Data is null or undefined.');
+                            }
+                        });
+                    }
+
+                    // Call the fetchHourlyOrders function to initiate the chart rendering
+                    fetchHourlyOrders();
+
+
+   // Add New Item
+        const addItemSection = document.getElementById('add-item-section');
+        const newItemNameInput = document.getElementById('new-food-name');
+        const newItemPriceInput = document.getElementById('new-food-price');
+
+        const newItemimgInput = document.getElementById('new-food-img');
+        const newItemratingsInput = document.getElementById('new-food-ratings');
+
+        const newItemCategoryInput = document.getElementById('new-category');
+        const newItemDescInput = document.getElementById('new-food-desc');
+        const addItemBtn = document.getElementById('add-item-btn');
+
+        addItemBtn.addEventListener('click', () => {
+            const newItem = {
+                food_img: newItemimgInput.value,
+                food_name: newItemNameInput.value,
+                food_ratings: newItemratingsInput.value,
+                food_price: newItemPriceInput.value,
+                category: newItemCategoryInput.value,
+                food_desc: newItemDescInput.value
+            };
+
+            itemsRef.push(newItem); // Add new item to Firebase
+
+            // Clear input fields
+            newItemimgInput.value = '';
+            newItemNameInput.value = '';
+            newItemPriceInput.value = '';
+            newItemratingsInput.value = '';
+            newItemCategoryInput.value = '';
+            newItemDescInput.value = '';
+        });
+
+                    // Item Management
+                    const itemsRef = database.ref(prompt('enter the category'));
+                    const itemList = document.getElementById('item-list');
+
+                    itemsRef.on('value', (snapshot) => {
+                        renderItemList(snapshot);
+                    });
+
+                    function renderItemList(snapshot) {
+                        itemList.innerHTML = '';
+
+                        snapshot.forEach((childSnapshot) => {
+                            const item = childSnapshot.val();
+                            const itemId = childSnapshot.key;
+                            console.log(item);
+                            const listItem = document.createElement('li');
+                            listItem.className = 'item-item';
+                            listItem.innerHTML = `
+                <span>Name: ${item.food_name}</span> &nbsp;
+                <span>Price: ${item.food_price}</span> &nbsp;
+                <span>Category: ${item.category}</span> &nbsp;
+                <span>Description: ${item.food_desc}</span> &nbsp;
+                <button class="edit-item-btn">Edit Item</button>&nbsp;
+                <button class="delete-item-btn">Delete Item</button>&nbsp;
+            `;
+
+                            listItem.querySelector('.edit-item-btn').addEventListener('click', () => editItem(itemId));
+                            listItem.querySelector('.delete-item-btn').addEventListener('click', () => deleteItem(itemId));
+
+                            itemList.appendChild(listItem);
+                        });
+                    }
+
+                    function editItem(itemId) {
+                        // Implement the logic to edit an item
+                        // You can use the itemId to fetch additional details if neededz
+                        alert(`Edit Item with ID: ${itemId}`);
+                    }
+
+                    function deleteItem(itemId) {
+                        // Implement the logic to delete an item
+                        // You can use the itemId to remove the item from the database
+                        if (confirm('Are you sure you want to delete this item?')) {
+                            itemsRef.child(itemId).remove();
+                        }
+                    }
+
+                    function toggleEditMode(itemId) {
+                        const itemElement = document.getElementById(itemId);
+
+                        // Check if the itemElement is not null before using classList
+                        if (itemElement) {
+                            itemElement.classList.toggle('editable');
+
+                            // Enable/disable contenteditable attribute
+                            const editableFields = itemElement.querySelectorAll('.editable-field');
+                            editableFields.forEach(field => {
+                                field.contentEditable = !field.isContentEditable;
+                            });
+                        } else {
+                            console.error(`Item with ID ${itemId} not found.`);
+                        }
+                    }
+
+                    // Update item details
+                    function updateItem(itemId) {
+                        const updatedItem = {};
+                        const itemElement = document.getElementById(itemId);
+
+                        // Get updated values from editable fields
+                        updatedItem.food_name = itemElement.querySelector('.edit-food-name').textContent;
+                        updatedItem.food_price = itemElement.querySelector('.edit-food-price').textContent;
+                        updatedItem.category = itemElement.querySelector('.edit-category').textContent;
+                        updatedItem.food_desc = itemElement.querySelector('.edit-food-desc').textContent;
+
+                        // Update the item in the Firebase database
+                        itemsRef.child(itemId).update(updatedItem);
+
+                        // Toggle back to view mode
+                        toggleEditMode(itemId);
+                    }
+
+                    // Event listeners
+                    itemList.addEventListener('click', (event) => {
+                        const target = event.target;
+
+                        if (target.classList.contains('edit-item-btn')) {
+                            const itemId = target.closest('.item-item').id;
+                            toggleEditMode(itemId);
+                        }
+
+                        if (target.classList.contains('update-item-btn')) {
+                            const itemId = target.closest('.item-item').id;
+                            updateItem(itemId);
+                        }
+
+                        if (target.classList.contains('delete-item-btn')) {
+                            const itemId = target.closest('.item-item').id;
+                            deleteItem(itemId);
+                        }
+                    });
+
+                    // ...
 
 
 
-        function editOrder(orderId) {
-            const newStatus = prompt('Enter new order status:');
-            if (newStatus !== null) {
-                ordersRef.child(orderId).update({ orderStatus: newStatus });
+
+                    function acceptOrder(orderId) {
+                        updateOrderStatus(orderId, 'Accepted');
+                    }
+
+                    function rejectOrder(orderId) {
+                        updateOrderStatus(orderId, 'Rejected');
+                    }
+
+                    function updateOrderStatus(orderId, newStatus) {
+                        ordersRef.child(orderId).update({ orderStatus: newStatus });
+                    }
+
+
+
+                    function editOrder(orderId) {
+                        const newStatus = prompt('Enter new order status:');
+                        if (newStatus !== null) {
+                            ordersRef.child(orderId).update({ orderStatus: newStatus });
+                        }
+                    }
+
+                } else {
+                    window.location.href = 'redirect.html';
+                    // No user is signed in
+                    document.getElementById('total-users').textContent = '0';
+
+                }
             }
-        }
+            else {
+                window.location.href = 'redirect.html';
+                // No user is signed in
+                document.getElementById('total-users').textContent = '0';
 
-    }  else {
-        window.location.href = 'redirect.html';
-        // No user is signed in
-        document.getElementById('total-users').textContent = '0';
-
-    }
-}
-     else {
-        window.location.href = 'redirect.html';
-        // No user is signed in
-        document.getElementById('total-users').textContent = '0';
-
-    }
-});
+            }
+        });
     </script>
 </body>
 
