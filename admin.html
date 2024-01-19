@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+
+    <!-- Firebase Configuration -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
+    <script src="/firebaseconfig.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
+
+        #dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .section {
+            flex: 1 1 100%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            color: #495057;
+        }
+
+        .list {
+            list-style: none;
+            padding: 0;
+        }
+
+        button {
+            cursor: pointer;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        input {
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .order-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .order-item button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .order-item button:hover {
+            background-color: #0056b3;
+        }
+
+        .order-images {
+            width: 70px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="dashboard">
+        <div class="section" id="user-management">
+            <h2>User Management</h2>
+            <p>Total Users: <span id="total-users">Loading...</span></p>
+        </div>
+
+        <div class="section" id="order-management">
+            <h2>Order Management</h2>
+            <ul class="list" id="order-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Firebase (already included in firebase-config.js)
+        // Firebase Configuration is included in the head
+
+        // Get a reference to the Firebase Realtime Database
+        const database = firebase.database();
+ // Get a reference to the Firebase Authentication
+ const auth = firebase.auth();
+
+// User Management - Total Users
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        // User is signed in
+        displayAllUsers();
+    } else {
+        // No user is signed in
+        document.getElementById('total-users').textContent = '0';
+    }
+});
+
+function displayAllUsers() {
+    const userListElement = document.getElementById('user-management');
+    
+    const totalUsers = [];
+
+    // Get a reference to the 'users' node in the database
+    const usersRef = database.ref('users');
+
+    // Listen for changes in the 'users' node
+    usersRef.on('value', (snapshot) => {
+        // Iterate through each user in the snapshot
+        snapshot.forEach((userSnapshot) => {
+            const userData = userSnapshot.val();
+            const userName = userData.email;
+            totalUsers.push(userName);
+                // Append user information to the dashboard
+          const userContainer = document.createElement('div');
+          userContainer.textContent = `User: ${userName}`;
+          userListElement.appendChild(userContainer);
+        });
+
+        document.getElementById('total-users').textContent = totalUsers.length;
+    });
+}
+
+        // Order Management
+        const ordersRef = database.ref('orders');
+        const orderList = document.getElementById('order-list');
+
+        ordersRef.on('value', (snapshot) => {
+            renderOrderList(snapshot);
+        });
+        function renderOrderList(snapshot) {
+    orderList.innerHTML = '';
+
+    snapshot.forEach((childSnapshot) => {
+        const order = childSnapshot.val();
+        const orderId = childSnapshot.key;
+
+        const listItem = document.createElement('li');
+        listItem.className = 'order-item';
+        listItem.innerHTML = `
+            <span><img class='order-images' src='${order.orderimg}'></span> &nbsp;
+            <span>Order ID: ${orderId}</span> &nbsp;
+            <span>Status: ${order.orderStatus}</span>&nbsp;
+            <span>Date: ${order.orderDate}</span>&nbsp;
+            <span>Time: ${order.orderTime}</span>&nbsp;
+            <button onclick="editOrder('${orderId}')">Edit Order</button>&nbsp;
+            <button onclick="acceptOrder('${orderId}')">Accept Order</button>&nbsp;
+            <button onclick="rejectOrder('${orderId}')">Reject Order</button>&nbsp;
+        `;
+
+        orderList.appendChild(listItem);
+    });
+}
+function acceptOrder(orderId) {
+    updateOrderStatus(orderId, 'Accepted');
+}
+
+function rejectOrder(orderId) {
+    updateOrderStatus(orderId, 'Rejected');
+}
+
+function updateOrderStatus(orderId, newStatus) {
+    ordersRef.child(orderId).update({ orderStatus: newStatus });
+}
+
+
+        function editOrder(orderId) {
+            const newStatus = prompt('Enter new order status:');
+            if (newStatus !== null) {
+                ordersRef.child(orderId).update({ orderStatus: newStatus });
+            }
+        }
+    </script>
+</body>
+
+</html>

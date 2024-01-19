@@ -2,16 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import { getDatabase, ref, get, push, set, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 import { GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-const firebaseConfig = {
-    apiKey: "AIzaSyBOndzgkTed5OmE6BsMstYLc7W9HT3YPp0",
-    authDomain: "foodorder-97583.firebaseapp.com",
-    databaseURL: "https://foodorder-97583-default-rtdb.firebaseio.com",
-    projectId: "foodorder-97583",
-    storageBucket: "foodorder-97583.appspot.com",
-    messagingSenderId: "559028587131",
-    appId: "1:559028587131:web:a4f8b6897be29b86d670de",
-    measurementId: "G-62G43E2LTN"
-};
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -19,6 +10,28 @@ const auth = getAuth(app);
 
 
 let data;
+
+// Get a reference to the Firebase Realtime Database
+const database = firebase.database();
+// Reference to the "orders" node in the database
+const ordersRef = database.ref('orders');
+
+function updateMenuWithLiveChanges() {
+    ordersRef.on('child_changed', (snapshot) => {
+        // Handle changes in order details
+        const changedOrder = snapshot.val();
+        const orderId = snapshot.key;
+
+        if (changedOrder && changedOrder.orderStatus) {
+            document.getElementById('notificationSoundd').play();
+            alert(`Your order (${changedOrder.foodName}) has been ${changedOrder.orderStatus.toLowerCase()} by the owner.`);
+            getCurrentOrders(); // You may need to update the UI with the latest orders
+        }
+    });
+}
+
+// Call the function to start listening for live changes in the menu
+updateMenuWithLiveChanges();
 
 // Fetch data from Firebase and update UI
 function fetchDataFromFirebaseAndLog() {
@@ -67,7 +80,7 @@ function addlenght() {
                 document.querySelector('.alli').textContent = data['all'].length +'items'
                 document.querySelector('.fasti').textContent = data['fastfood'].length +'items'
                 document.querySelector('.lunchi').textContent = data['lunch'].length +'items'
-                // document.querySelector('.deeneri').textContent = data['deener'].length +'items'
+                document.querySelector('.dinneri').textContent = data['dinner'].length +'items'
                 console.log(data)
                 
                 }
@@ -342,6 +355,7 @@ function logOut() {
 function displayPopup(popupid) {
     document.getElementById(popupid).style.display='block'
 }
+
 // Function to get current orders from the database
 function getCurrentOrders() {
     const user = getAuth().currentUser;
@@ -362,10 +376,10 @@ function getCurrentOrders() {
                 if (snapshot.exists()) {
                     const ordersData = snapshot.val();
                     const ordersArray = ordersData ? Object.entries(ordersData) : [];
-                    const userOrders = ordersArray.filter(([orderId, ele]) => ele.userEmail === userEmail);
+                    // const userOrders = ordersArray.filter(([orderId, ele]) => ele.userEmail === userEmail);
 
                     console.log('Total Orders:', ordersArray.length);
-
+                    const userOrders = ordersArray.filter(([orderId, ele]) => ele.userEmail === userEmail && ele.orderStatus !== 'Accepted');
                     if (userOrders.length > 0) {
                         document.getElementById('totalItem').textContent = userOrders.length;
                         // Clear existing content
@@ -477,6 +491,7 @@ function buyNow() {
             };
         
             addOrderToFirebase(order);
+            document.getElementById('notificationSound').play();
         });
         
         
@@ -625,6 +640,7 @@ function cancelOrder(orderId) {
     remove(orderRef)
         .then(() => {
             getCurrentOrders();
+            document.getElementById('notificationSound').play();
         })
         .catch((error) => {
             console.error('Error canceling order:', error.message);

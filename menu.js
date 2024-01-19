@@ -2,16 +2,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import { getDatabase, ref, get, push, set, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 import { GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-const firebaseConfig = {
-    apiKey: "AIzaSyBOndzgkTed5OmE6BsMstYLc7W9HT3YPp0",
-    authDomain: "foodorder-97583.firebaseapp.com",
-    databaseURL: "https://foodorder-97583-default-rtdb.firebaseio.com",
-    projectId: "foodorder-97583",
-    storageBucket: "foodorder-97583.appspot.com",
-    messagingSenderId: "559028587131",
-    appId: "1:559028587131:web:a4f8b6897be29b86d670de",
-    measurementId: "G-62G43E2LTN"
-};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -35,6 +25,27 @@ window.addEventListener('load', () => {
     // Call the function to update the cart popup with the loaded or empty cartItems
     updateCartPopup();
 });
+// Get a reference to the Firebase Realtime Database
+const database = firebase.database();
+// Reference to the "orders" node in the database
+const ordersRef = database.ref('orders');
+
+function updateMenuWithLiveChanges() {
+    ordersRef.on('child_changed', (snapshot) => {
+        // Handle changes in order details
+        const changedOrder = snapshot.val();
+        const orderId = snapshot.key;
+
+        if (changedOrder && changedOrder.orderStatus) {
+            document.getElementById('notificationSoundd').play();
+            alert(`Your order (${changedOrder.foodName}) has been ${changedOrder.orderStatus.toLowerCase()} by the owner.`);
+            getCurrentOrders(); // You may need to update the UI with the latest orders
+        }
+    });
+}
+
+// Call the function to start listening for live changes in the menu
+updateMenuWithLiveChanges();
 
 
 // Function to update the cart in local storage and display the cart popup
@@ -133,31 +144,79 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Function to check if a user is logged in and fetch their details
 function checkAuthState() {
     onAuthStateChanged(auth, (user) => {
-    getCurrentOrders();
+        getCurrentOrders();
 
         if (user) {
             // User is signed in
             console.log("User is signed in:", user.email);
-            document.querySelector('#profilename').style.display='block'
+            document.querySelector('#profilename').style.display = 'block';
             closesignupBtn();
-            document.getElementById('side-loginBtn').style.display = 'none'
-            document.querySelector('#profilename').innerHTML = user.email
-            document.getElementById('side-logoutBtn').style.display='block'
-            // document.querySelector('.login-loading').style.display='none'
+            document.getElementById('side-loginBtn').style.display = 'none';
+            document.querySelector('#profilename').innerHTML = user.email;
+            document.getElementById('side-logoutBtn').style.display = 'block';
+
+            // Fetch user details from the database
+            fetchUserDetails(user.uid);
         } else {
             // User is signed out
             console.log("User is signed out");
-            document.querySelector('#profilename').style.display='none'
-            document.getElementById('side-logoutBtn').style.display = 'none'
-            document.getElementById('side-loginBtn').style.display = 'block'
-            // document.querySelector('.login-loading').style.display='none'
+            document.querySelector('#profilename').style.display = 'none';
+            document.getElementById('side-logoutBtn').style.display = 'none';
+            document.getElementById('side-loginBtn').style.display = 'block';
         }
     });
 }
 checkAuthState();
+
+function fetchUserDetails(uid) {
+    const database = getDatabase(app);
+    const userRef = ref(database, 'users/' + uid);
+
+    // Fetch user details from the database
+    get(userRef)
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                const userDetails = snapshot.val();
+                console.log('User Details:', userDetails);
+
+                // Optionally, update the UI with user details
+            } else {
+                console.log('User details not found in the database.');
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching user details:', error.message);
+        });
+}
+
+function signUp(email, password) {
+    return createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+
+            // Store user details in the database
+            storeUserDetails(user.uid, email);
+        });
+}
+
+function storeUserDetails(uid, email) {
+    const database = getDatabase(app);
+    const userRef = ref(database, 'users/' + uid);
+
+    // Store user details in the database
+    set(userRef, {
+        email: email,
+        // Add more user details as needed
+    })
+        .then(() => {
+            console.log('User details stored successfully.');
+        })
+        .catch((error) => {
+            console.error('Error storing user details:', error.message);
+        });
+}
 
 
 function sidesignupBtn() {
@@ -202,6 +261,7 @@ loginBtn.addEventListener('click', () => {
         });
 });
 
+
 logoutBtn.addEventListener('click', () => {
     logOut()
         .then(() => {
@@ -228,10 +288,7 @@ function performLogout() {
         });
 }
 
-// Function to sign up a user
-function signUp(email, password) {
-    return createUserWithEmailAndPassword(auth, email, password);
-}
+
 
 // Function to log in a user
 function logIn(email, password) {
@@ -272,88 +329,85 @@ function orders() {
     getCurrentOrders();
 }
 
-// get current orders from database
 function getCurrentOrders() {
     const user = getAuth().currentUser;
 
     if (user) {
+        console.log(user.email);
+        const userEmail = user.email
+        const database = getDatabase(app);
+        const dataRef = ref(database, 'orders');
 
-    console.log(user.email);
-const userEmail = user.email
-    const database = getDatabase(app);
-    const dataRef = ref(database, 'orders');
+        get(dataRef)
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    document.querySelector('.orders').style.display = 'block';
+                    const data = snapshot.val();
+                    const orders = data ? Object.entries(data) : [];
 
-    get(dataRef)
-        .then((snapshot) => {
-            if (snapshot.exists()) {
-                document.querySelector('.orders').style.display = 'block';
-                const data = snapshot.val();
-                const orders = data ? Object.entries(data) : [];
+                    console.log('Total Orders:', orders.length);
+                    // Filter orders based on user's email
+                    const userOrders = orders.filter(([orderId, ele]) => ele.userEmail === userEmail && ele.orderStatus !== 'Accepted');
 
-                console.log('Total Orders:', orders.length);
-  // Filter orders based on user's email
-  const userOrders = orders.filter(([orderId, ele]) => ele.userEmail === userEmail);
+                    if (userOrders.length > 0) {
+                        document.querySelector('.orders').style.display = 'block';
+                        console.log('Total Orders:', userOrders.length);
 
-  if (userOrders.length > 0) {
-      document.querySelector('.orders').style.display = 'block';
-      console.log('Total Orders:', userOrders.length);
+                        let mylistsec = document.getElementById('currentOrders');
+                        mylistsec.innerHTML = '';
+                        let totalOrderPrice = 0; // Initialize the total order price
 
-      let mylistsec = document.getElementById('currentOrders');
-      mylistsec.innerHTML = '';
-      let totalOrderPrice = 0; // Initialize the total order price
+                        document.getElementById('totalItems').textContent = userOrders.length;
 
-      document.getElementById('totalItems').textContent = userOrders.length;
+                        userOrders.forEach(([orderId, ele]) => {
+                            const list = createCardElement('div');
+                            list.classList.remove('card');
+                            list.classList.add('curentorderslist');
+                            list.innerHTML = `
+                                <li class=''my-o-img><img class='current-o-img' src='${ele.orderimg}'></li>
+                                <li>${ele.foodName}</li>
+                                <li>${ele.orderPrice}</li>
+                                <li>${ele.orderDate}</li>
+                                <li>${ele.orderTime}</li>
+                                <li>${ele.orderStatus}</li>
+                                <button class='cancel-btn' data-order-id='${orderId}'>Cancel</button>
+                            `;
 
-      userOrders.forEach(([orderId, ele]) => {
-          const list = createCardElement('div');
-          list.classList.remove('card');
-          list.classList.add('curentorderslist');
-          list.innerHTML = `
-          <li class=''my-o-img><img class='current-o-img' src='${ele.orderimg}'></li>
-          <li>${ele.foodName}</li>
-          <li>${ele.orderPrice}</li>
-          <li>${ele.orderDate}</li>
-          <li>${ele.orderTime}</li>
-          <li>${ele.orderStatus}</li>
-          <button class='cancel-btn' data-order-id='${orderId}'>Cancel</button>
-      `;
+                            mylistsec.appendChild(list);
 
-          mylistsec.appendChild(list);
+                            const cancelBtn = list.querySelector('.cancel-btn');
+                            cancelBtn.addEventListener('click', () => cancelOrder(orderId));
 
-          const cancelBtn = list.querySelector('.cancel-btn');
-          cancelBtn.addEventListener('click', () => cancelOrder(orderId));
+                            // Accumulate the order prices
+                            totalOrderPrice += parseFloat(ele.orderPrice);
+                        });
 
-          // Accumulate the order prices
-          totalOrderPrice += parseFloat(ele.orderPrice);
-      });
-
-      // Display the total order price
-      document.getElementById('orderTotal').textContent = `${totalOrderPrice.toFixed(2)}`;
-  } else {
-      let mylistsec = document.getElementById('currentOrders');
-      mylistsec.innerHTML = '';
-      document.getElementById('orderTotal').textContent = '0';
-      document.getElementById('orderSummaryBox').style.display = 'none';
-      document.querySelector('.orders').style.display = 'none';
-  }
-} else {
-  let mylistsec = document.getElementById('currentOrders');
-  mylistsec.innerHTML = '';
-  document.getElementById('orderTotal').textContent = '0';
-  document.getElementById('orderSummaryBox').style.display = 'none';
-  document.querySelector('.orders').style.display = 'none';
-}
-})
-.catch((error) => {
-console.error('Error fetching data:', error.message);
-});
-}
-
+                        // Display the total order price
+                        document.getElementById('orderTotal').textContent = `${totalOrderPrice.toFixed(2)}`;
+                    } else {
+                        let mylistsec = document.getElementById('currentOrders');
+                        mylistsec.innerHTML = '';
+                        document.getElementById('orderTotal').textContent = '0';
+                        document.getElementById('orderSummaryBox').style.display = 'none';
+                        document.querySelector('.orders').style.display = 'none';
+                    }
+                } else {
+                    let mylistsec = document.getElementById('currentOrders');
+                    mylistsec.innerHTML = '';
+                    document.getElementById('orderTotal').textContent = '0';
+                    document.getElementById('orderSummaryBox').style.display = 'none';
+                    document.querySelector('.orders').style.display = 'none';
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error.message);
+            });
+    }
 }
 
-// cencle order directly in database
+
+// Cancel order directly in the database
 function cancelOrder(orderId) {
-
     // Assuming you have a reference to the 'orders' node in your Firebase database
     const orderRef = ref(getDatabase(app), `orders/${orderId}`);
 
@@ -365,7 +419,15 @@ function cancelOrder(orderId) {
         .catch((error) => {
             console.error('Error canceling order:', error.message);
         });
+
+    // Play the notification sound
+    const notificationSound = document.getElementById('notificationSound');
+    notificationSound.play();
+
+    // Display an alert message
+    alert('Your order has been canceled.');
 }
+
 
 
 // healpwer functions 
@@ -560,12 +622,17 @@ function buyNow() {
             };
         
             addOrderToFirebase(order);
+               // Play the notification sound
+    const notificationSound = document.getElementById('notificationSound');
+    notificationSound.play();
+
         });
         updateCartPopup();
         // Optionally, you can update the cart popup here
     }
 }
 
+// ... (your existing code)
 
 // Function to add a new order to Firebase
 function addOrderToFirebase(order) {
@@ -576,9 +643,31 @@ function addOrderToFirebase(order) {
 
     // Add the order along with the timestamp
     set(newOrderRef, { ...order, orderTimestamp: firebase.database.ServerValue.TIMESTAMP });
+
+    // Check if the order status is "Accepted"
+    if (order.orderStatus === "Accepted") {
+        // Check if the alert for order acceptance has already been shown
+        const orderAcceptedAlertShown = localStorage.getItem('orderAcceptedAlertShown');
+        if (!orderAcceptedAlertShown) {
+            // Play the notification sound
+            const notificationSound = document.getElementById('notificationSound');
+            notificationSound.play();
+
+            // Display an alert message
+            alert('Your order has been accepted!');
+
+            // Set a flag in localStorage to indicate that the alert has been shown
+            localStorage.setItem('orderAcceptedAlertShown', 'true');
+        }
+    }
+
     getCurrentOrders();
     return newOrderRef.key;
 }
+
+// ... (your existing code)
+
+
 // Function to get the current date in the format YYYY-MM-DD
 function getCurrentDate() {
     const now = new Date();
