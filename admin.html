@@ -16,91 +16,152 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 20px;
-            background-color: #f8f9fa;
-        }
+   body {
+    font-family: 'Arial', sans-serif;
+    margin: 20px;
+    background-color: #f8f9fa;
+}
 
-        #dashboard {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
+#dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
 
-        .section {
-            flex: 1 1 100%;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #ffffff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
+.section {
+    flex: 1 1 100%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
 
-        h2 {
-            margin-bottom: 10px;
-            color: #495057;
-        }
+h2 {
+    margin-bottom: 10px;
+    color: #495057;
+}
 
-        .list {
-            list-style: none;
-            padding: 0;
-        }
+.list {
+    list-style: none;
+    padding: 0;
+}
 
-        button {
-            cursor: pointer;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
+button {
+    cursor: pointer;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
 
-        button:hover {
-            background-color: #45a049;
-        }
+button:hover {
+    background-color: #45a049;
+}
 
-        input {
-            padding: 8px;
-            margin-bottom: 10px;
-        }
+input {
+    padding: 8px;
+    margin-bottom: 10px;
+}
 
-        canvas {
-            max-width: 100%;
-            height: auto;
-        }
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+/* Add the following CSS for improved Order Management layout */
+#order-management {
+    flex: 1 1 100%;
+}
 
-        .order-item {
-            border-bottom: 1px solid #ddd;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-        }
+#order-list {
+    padding: 0;
+}
 
-        .order-item button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+.order-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
 
-        .order-item button:hover {
-            background-color: #0056b3;
-        }
+.order-images {
+    width: 100px; /* Adjust the width of the order images */
+    height: auto;
+    margin-right: 10px; /* Add margin for better spacing */
+    border-radius: 10px;
+}
 
-        .order-images {
-            width: 70px;
-            border-radius: 10px;
-        }
+.order-item button {
+    margin-left: auto; /* Push buttons to the right */
+}
+
+.order-item span {
+    flex: 1; /* Distribute remaining space equally among spans */
+}
+
+/* Adjustments for better responsiveness */
+@media (max-width: 768px) {
+    .order-images {
+        width: 30px; /* Adjust the width of the order images for smaller screens */
+    }
+
+    .order-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .order-item button {
+        margin-left: 0;
+        margin-top: 10px; /* Add margin for better spacing */
+    }
+}
+
+
+/* Additional Styles for Improved Layout */
+#user-management,
+#order-management {
+    margin-right: 10px;
+}
+
+#dashboard {
+    justify-content: space-between;
+}
+/* Add the following CSS for table styling */
+#user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+#user-table th, #user-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+#user-table th {
+    background-color: #f2f2f2;
+}
+
+#user-list tr:hover {
+    background-color: #f5f5f5;
+}
+
+
+@media (min-width: 768px) {
+    .section {
+        flex: 1 1 calc(50% - 10px);
+    }
+}
+
     </style>
 </head>
 
@@ -108,8 +169,20 @@
     <div id="dashboard">
         <div class="section" id="user-management">
             <h2>User Management</h2>
-            <p>Total Users: <span id="total-users">Loading...</span></p>
+            <div id="user-stats">
+                <span>Total Users: <span id="total-users">Loading...</span></span>
+            </div>
+            <table id="user-table">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody id="user-list"></tbody>
+            </table>
         </div>
+        
 
         <div class="section" id="order-management">
             <h2>Order Management</h2>
@@ -137,30 +210,35 @@ auth.onAuthStateChanged((user) => {
     }
 });
 
+// Inside displayAllUsers() function
 function displayAllUsers() {
-    const userListElement = document.getElementById('user-management');
-    
-    const totalUsers = [];
+    const userListElement = document.getElementById('user-list');
+    const totalUsersElement = document.getElementById('total-users');
 
-    // Get a reference to the 'users' node in the database
+    // Clear existing rows
+    userListElement.innerHTML = '';
+
     const usersRef = database.ref('users');
 
-    // Listen for changes in the 'users' node
     usersRef.on('value', (snapshot) => {
-        // Iterate through each user in the snapshot
         snapshot.forEach((userSnapshot) => {
             const userData = userSnapshot.val();
-            const userName = userData.email;
-            totalUsers.push(userName);
-                // Append user information to the dashboard
-          const userContainer = document.createElement('div');
-          userContainer.textContent = `User: ${userName}`;
-          userListElement.appendChild(userContainer);
+            const userId = userSnapshot.key;
+            const userEmail = userData.email;
+
+            // Create a new row in the table
+            const newRow = userListElement.insertRow();
+            newRow.innerHTML = `
+                <td>${userId}</td>
+                <td>${userEmail}</td>
+            `;
         });
 
-        document.getElementById('total-users').textContent = totalUsers.length;
+        totalUsersElement.textContent = snapshot.numChildren();
     });
 }
+
+
 
         // Order Management
         const ordersRef = database.ref('orders');
@@ -180,7 +258,7 @@ function displayAllUsers() {
         listItem.className = 'order-item';
         listItem.innerHTML = `
             <span><img class='order-images' src='${order.orderimg}'></span> &nbsp;
-            <span>Order ID: ${orderId}</span> &nbsp;
+            <span>Ordered by: ${order.userEmail}</span> &nbsp;
             <span>Status: ${order.orderStatus}</span>&nbsp;
             <span>Date: ${order.orderDate}</span>&nbsp;
             <span>Time: ${order.orderTime}</span>&nbsp;
