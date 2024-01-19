@@ -75,7 +75,6 @@ body{
     color: black;
     font-size: 35px;
     font-weight: 700;
-    font-family: cursive;
     padding: 0px 10px;
     cursor: pointer;
    float: left;
@@ -536,7 +535,7 @@ footer{
 }
 .footer-innerdiv{
     padding: 20px 0px;
-    width: 350px;
+    width: 380px;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -550,17 +549,27 @@ footer{
     font-size: 25px;
     text-decoration: underline;
 }
+.ultagg{
+    list-style: none;
+    display:  flex;
+    flex-wrap: nowrap;
+    gap: 20px;
+}
+.ultagg li a{
+    text-decoration: none;
+    color: rgb(42, 39, 34);
+}
+.ultagg li a:hover{
+    text-decoration: underline;
+    color: rgb(122, 18, 18);
+
+}
 .social-links li a i{
     color: black;  
     transition: 0.3s;
 }
 .social-links li a i:hover{
     color: rgb(237, 66, 24);
-}
-.footer-about img{
-    width: 30%;
-    height: auto;
-    border-radius: 10%;
 }
 .portfolio-link{
     font-size: 20px;
@@ -574,6 +583,7 @@ footer{
     text-decoration: none;
     font-weight: 700;
 }
+
 
 #cartPopup{
     display: none;
@@ -635,7 +645,6 @@ footer{
     cursor: pointer;
     color: #333;
     font-size: 35px;
-    font-family: cursive;
     font-weight: 700;
 }
 

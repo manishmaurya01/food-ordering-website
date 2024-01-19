@@ -362,6 +362,7 @@ function getCurrentOrders() {
                     const ordersArray = ordersData ? Object.entries(ordersData) : [];
                     // const userOrders = ordersArray.filter(([orderId, ele]) => ele.userEmail === userEmail);
 
+                    console.log('Total Orders:', ordersArray.length);
                     const userOrders = ordersArray.filter(([orderId, ele]) => ele.userEmail === userEmail && ele.orderStatus !== 'Accepted');
                     if (userOrders.length > 0) {
                         document.getElementById('totalItem').textContent = userOrders.length;

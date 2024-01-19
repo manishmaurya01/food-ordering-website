@@ -11,7 +11,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
     <script src="/firebaseconfig.js"></script>
-
+    <link rel="stylesheet" href="responsive.css">
 
     <!-- Chart.js for Bar Charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -114,24 +114,6 @@
             /* Distribute remaining space equally among spans */
         }
 
-        /* Adjustments for better responsiveness */
-        @media (max-width: 768px) {
-            .order-images {
-                width: 30px;
-                /* Adjust the width of the order images for smaller screens */
-            }
-
-            .order-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .order-item button {
-                margin-left: 0;
-                margin-top: 10px;
-                /* Add margin for better spacing */
-            }
-        }
 
 
         /* Additional Styles for Improved Layout */
@@ -168,7 +150,7 @@
 
         .navbar {
             width: 100%;
-            height: 10%;
+            height: auto;
             position: fixed;
             top: 0;
             background-color: #ccc;
@@ -272,7 +254,44 @@
         .item-item.editable span {
             display: none;
         }
+        #dashboard{
+            padding: 0px 0px;
+        }
+.section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: auto;
+    flex-wrap: nowrap;
+}
+.order-item{
+    flex-wrap: nowrap;
+}
+        /* Adjustments for better responsiveness */
+        @media (max-width: 768px) {
+            .order-images {
+                width: 30px;
+                /* Adjust the width of the order images for smaller screens */
+            }
 
+            .order-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .order-item button {
+                margin-left: 0;
+                margin-top: 10px;
+                /* Add margin for better spacing */
+            }
+            .ultag li a{
+                font-size: 13px;
+                padding: 0px 2px;
+            }
+          
+        }
 
         @media (min-width: 768px) {
             .section {
@@ -292,6 +311,7 @@
             <li><a href="contact.html">Contac us</a></li>
         </ul>
     </nav>
+    <br><br>
     <div id="dashboard">
         <div class="section" id="user-management">
             <h2>User Management</h2>
@@ -301,7 +321,6 @@
             <table id="user-table">
                 <thead>
                     <tr>
-                        <th>User ID</th>
                         <th>Email</th>
                     </tr>
                 </thead>
@@ -324,7 +343,7 @@
         </div>
         <div class="section" id="item-management">
             <h2>Item Management</h2>
-            <ul class="list" id="item-list"></ul>
+            <!-- <ul class="list" id="item-list"></ul> -->
             <div id="add-item-section">
                 <h3>Add New Item</h3>
                 <div>
@@ -377,33 +396,33 @@
                     displayAllUsers();
 
 
-                    // Inside displayAllUsers() function
                     function displayAllUsers() {
-                        const userListElement = document.getElementById('user-list');
-                        const totalUsersElement = document.getElementById('total-users');
+    const userListElement = document.getElementById('user-list');
+    const totalUsersElement = document.getElementById('total-users');
 
-                        // Clear existing rows
-                        userListElement.innerHTML = '';
+    // Clear existing rows
+    userListElement.innerHTML = '';
 
-                        const usersRef = database.ref('users');
+    const usersRef = database.ref('users');
 
-                        usersRef.on('value', (snapshot) => {
-                            snapshot.forEach((userSnapshot) => {
-                                const userData = userSnapshot.val();
-                                const userId = userSnapshot.key;
-                                const userEmail = userData.email;
+    usersRef.on('value', (snapshot) => {
+        snapshot.forEach((userSnapshot) => {
+            const userData = userSnapshot.val();
+            const userId = userSnapshot.key;
+            const userEmail = userData.email;
 
-                                // Create a new row in the table
-                                const newRow = userListElement.insertRow();
-                                newRow.innerHTML = `
-                <td>${userId}</td>
+            // Create a new row in the table
+            const newRow = userListElement.insertRow();
+            newRow.innerHTML = `
+             
                 <td>${userEmail}</td>
             `;
-                            });
+        });
 
-                            totalUsersElement.textContent = snapshot.numChildren();
-                        });
-                    }
+        totalUsersElement.textContent = snapshot.numChildren();
+    });
+}
+
 
                     // Order Management
                     const ordersRef = database.ref('orders');
@@ -475,8 +494,6 @@
                     }
 
                     function viewCanceledOrder(canceledOrderId) {
-                        // Implement the logic to view details of a canceled order
-                        // You can use the canceledOrderId to fetch additional details if needed
                         alert(`View Canceled Order with ID: ${canceledOrderId}`);
                     }
 
@@ -524,8 +541,6 @@
                         hourlyOrdersRef.on('value', (snapshot) => {
                             const hourlyOrdersData = snapshot.val();
 
-                            console.log('Fetched data:', hourlyOrdersData);
-
                             // Check if the data is null or undefined
                             if (hourlyOrdersData !== null && hourlyOrdersData !== undefined) {
                                 renderHourlyOrdersChart(hourlyOrdersData);
@@ -572,38 +587,38 @@
             newItemDescInput.value = '';
         });
 
-                    // Item Management
-                    const itemsRef = database.ref(prompt('enter the category'));
-                    const itemList = document.getElementById('item-list');
+            //         // Item Management
+            //         const itemsRef = database.ref(prompt('enter the category'));
+            //         const itemList = document.getElementById('item-list');
 
-                    itemsRef.on('value', (snapshot) => {
-                        renderItemList(snapshot);
-                    });
+            //         itemsRef.on('value', (snapshot) => {
+            //             renderItemList(snapshot);
+            //         });
 
-                    function renderItemList(snapshot) {
-                        itemList.innerHTML = '';
+            //         function renderItemList(snapshot) {
+            //             itemList.innerHTML = '';
 
-                        snapshot.forEach((childSnapshot) => {
-                            const item = childSnapshot.val();
-                            const itemId = childSnapshot.key;
-                            console.log(item);
-                            const listItem = document.createElement('li');
-                            listItem.className = 'item-item';
-                            listItem.innerHTML = `
-                <span>Name: ${item.food_name}</span> &nbsp;
-                <span>Price: ${item.food_price}</span> &nbsp;
-                <span>Category: ${item.category}</span> &nbsp;
-                <span>Description: ${item.food_desc}</span> &nbsp;
-                <button class="edit-item-btn">Edit Item</button>&nbsp;
-                <button class="delete-item-btn">Delete Item</button>&nbsp;
-            `;
+            //             snapshot.forEach((childSnapshot) => {
+            //                 const item = childSnapshot.val();
+            //                 const itemId = childSnapshot.key;
+            //                 console.log(item);
+            //                 const listItem = document.createElement('li');
+            //                 listItem.className = 'item-item';
+            //                 listItem.innerHTML = `
+            //     <span>Name: ${item.food_name}</span> &nbsp;
+            //     <span>Price: ${item.food_price}</span> &nbsp;
+            //     <span>Category: ${item.category}</span> &nbsp;
+            //     <span>Description: ${item.food_desc}</span> &nbsp;
+            //     <button class="edit-item-btn">Edit Item</button>&nbsp;
+            //     <button class="delete-item-btn">Delete Item</button>&nbsp;
+            // `;
 
-                            listItem.querySelector('.edit-item-btn').addEventListener('click', () => editItem(itemId));
-                            listItem.querySelector('.delete-item-btn').addEventListener('click', () => deleteItem(itemId));
+            //                 listItem.querySelector('.edit-item-btn').addEventListener('click', () => editItem(itemId));
+            //                 listItem.querySelector('.delete-item-btn').addEventListener('click', () => deleteItem(itemId));
 
-                            itemList.appendChild(listItem);
-                        });
-                    }
+            //                 itemList.appendChild(listItem);
+            //             });
+            //         }
 
                     function editItem(itemId) {
                         // Implement the logic to edit an item
@@ -654,27 +669,26 @@
                         toggleEditMode(itemId);
                     }
 
-                    // Event listeners
-                    itemList.addEventListener('click', (event) => {
-                        const target = event.target;
+                    // // Event listeners
+                    // itemList.addEventListener('click', (event) => {
+                    //     const target = event.target;
 
-                        if (target.classList.contains('edit-item-btn')) {
-                            const itemId = target.closest('.item-item').id;
-                            toggleEditMode(itemId);
-                        }
+                    //     if (target.classList.contains('edit-item-btn')) {
+                    //         const itemId = target.closest('.item-item').id;
+                    //         toggleEditMode(itemId);
+                    //     }
 
-                        if (target.classList.contains('update-item-btn')) {
-                            const itemId = target.closest('.item-item').id;
-                            updateItem(itemId);
-                        }
+                    //     if (target.classList.contains('update-item-btn')) {
+                    //         const itemId = target.closest('.item-item').id;
+                    //         updateItem(itemId);
+                    //     }
 
-                        if (target.classList.contains('delete-item-btn')) {
-                            const itemId = target.closest('.item-item').id;
-                            deleteItem(itemId);
-                        }
-                    });
+                    //     if (target.classList.contains('delete-item-btn')) {
+                    //         const itemId = target.closest('.item-item').id;
+                    //         deleteItem(itemId);
+                    //     }
+                    // });
 
-                    // ...
 
 
 
