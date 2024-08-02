@@ -15,7 +15,7 @@ let data;
 const database = firebase.database();
 // Reference to the "orders" node in the database
 const ordersRef = database.ref('orders');
-
+    
 function updateMenuWithLiveChanges() {
     ordersRef.on('child_changed', (snapshot) => {
         // Handle changes in order details
